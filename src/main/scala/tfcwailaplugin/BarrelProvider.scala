@@ -12,6 +12,8 @@ import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
 
+import implicits.TEBarrelAdapter
+
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
   private[this] def isValidFoodGroup: PartialFunction[Item, Boolean] = {
@@ -52,16 +54,25 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
                    tooltip: JList[String],
                    accessor: IWailaDataAccessor,
                    config: IWailaConfigHandler): JList[String] = {
+
     accessor.getTileEntity match {
       case e: TEBarrel =>
+        // sealing
         if (e.getSealed) {
           val msg = stateString(e)
           tooltip.add(s"[Sealed${if (msg.nonEmpty) s" / $msg" else ""}]")
         }
-        Option(e.getFluidStack).foreach { f =>
-          val item = e.getStackInSlot(0)
-          if (item != null)
-            tooltip.add(s"${item.getDisplayName} x ${item.stackSize}")
+        // solid container
+        val itemCount = e.getInvCount
+        if (1 <= itemCount) {
+          e.storage.view.filter(_ != null).take(3).foreach { i =>
+            tooltip.add(s"${i.getDisplayName} x${i.stackSize}")
+          }
+          if (3 < itemCount) tooltip.add(s"... ($itemCount items)")
+        } else
+          e.ifSlotAvailable(0)(item => tooltip.add(s"${item.getDisplayName} x${item.stackSize}"))
+        // fluid container
+        e.fluidStackOpt.foreach { f =>
           tooltip.add(s"${f.getLocalizedName} : ${f.amount} mb")
         }
       case _ =>
