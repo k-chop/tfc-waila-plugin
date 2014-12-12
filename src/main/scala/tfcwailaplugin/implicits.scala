@@ -7,7 +7,7 @@ import net.minecraftforge.fluids.FluidStack
 object implicits {
 
   // Utilities for TEBarrel (scala friendly)
-  implicit class TEBarrelAdapter(e: TEBarrel) extends AnyVal {
+  implicit class TEBarrelAdapter(val e: TEBarrel) extends AnyVal {
 
     def fluidStackOpt: Option[FluidStack] = Option(e.getFluidStack)
 
