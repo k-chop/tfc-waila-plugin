@@ -7,6 +7,7 @@ import com.bioxx.tfc.Items.Pottery.{ItemPotterySmallVessel, ItemPotteryBase}
 import com.bioxx.tfc.TileEntities.TEPottery
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
+import net.minecraftforge.common.util.ForgeDirection
 
 
 object PotteryProvider extends ProviderBase[TEPottery] {
@@ -14,7 +15,10 @@ object PotteryProvider extends ProviderBase[TEPottery] {
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
       case e: TEPottery =>
-        Option(accessor.getPosition.hitVec).map { v =>
+        val pos = accessor.getPosition
+
+        if (ForgeDirection.getOrientation(pos.sideHit) == ForgeDirection.UP) {
+          val v = pos.hitVec
           val hitX = v.xCoord - v.xCoord.floor
           val hitZ = v.zCoord - v.zCoord.floor
 
@@ -28,7 +32,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
           else if (hitX > 0.5 && hitZ > 0.5)
             e.getStackInSlot(3)
           else null
-        }.orNull
+        } else null
       case _ => null
     }
   }
