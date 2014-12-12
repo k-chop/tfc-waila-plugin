@@ -3,7 +3,7 @@ package tfcwailaplugin
 import cpw.mods.fml.common.FMLLog
 import mcp.mobius.waila.api.IWailaRegistrar
 
-import com.bioxx.tfc.TileEntities.{TEBarrel, TEWorldItem, TECrop}
+import com.bioxx.tfc.TileEntities._
 
 object Providers {
 
@@ -17,6 +17,8 @@ object Providers {
     FMLLog.info("BarrelProvider")
     registrar.registerBodyProvider(BarrelProvider, classOf[TEBarrel])
 
+    FMLLog.info("OreProvider")
+    registrar.registerStackProvider(OreProvider, classOf[TEOre])
   }
 
 }
