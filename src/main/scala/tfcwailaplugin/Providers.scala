@@ -19,6 +19,10 @@ object Providers {
 
     FMLLog.info("OreProvider")
     registrar.registerStackProvider(OreProvider, classOf[TEOre])
+
+    FMLLog.info("PotteryProvider")
+    registrar.registerStackProvider(PotteryProvider, classOf[TEPottery])
+    registrar.registerBodyProvider(PotteryProvider, classOf[TEPottery])
   }
 
 }
