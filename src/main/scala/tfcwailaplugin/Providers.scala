@@ -23,6 +23,9 @@ object Providers {
     FMLLog.info("PotteryProvider")
     registrar.registerStackProvider(PotteryProvider, classOf[TEPottery])
     registrar.registerBodyProvider(PotteryProvider, classOf[TEPottery])
+
+    FMLLog.info("ToolRackProvider")
+    registrar.registerStackProvider(ToolRackProvider, classOf[TileEntityToolRack])
   }
 
 }
