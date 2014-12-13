@@ -12,7 +12,7 @@ import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
 
-import implicits.TEBarrelAdapter
+import implicits.{IInventoryAdapter, TEBarrelAdapter}
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
@@ -25,8 +25,8 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
   }
 
   private[this] def stateString(b: TEBarrel): String = (for {
-    is <- Option(b.getStackInSlot(0))
-    fs <- Option(b.getFluidStack) if b.getSealed
+    is <- b.getSlotOpt(0)
+    fs <- b.fluidStackOpt if b.getSealed
   } yield {
     def isBrining =
       b.recipe != null && fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && isValidFoodGroup(is.getItem)
@@ -70,7 +70,7 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
           }
           if (3 < itemCount) tooltip.add(s"... ($itemCount items)")
         } else
-          e.ifSlotAvailable(0)(item => tooltip.add(s"${item.getDisplayName} x${item.stackSize}"))
+          e.ifNonEmptySlot(0)(item => tooltip.add(s"${item.getDisplayName} x${item.stackSize}"))
         // fluid container
         e.fluidStackOpt.foreach { f =>
           tooltip.add(s"${f.getLocalizedName} : ${f.amount} mb")

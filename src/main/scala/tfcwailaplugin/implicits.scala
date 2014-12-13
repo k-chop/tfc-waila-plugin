@@ -1,23 +1,32 @@
 package tfcwailaplugin
 
 import com.bioxx.tfc.TileEntities.TEBarrel
+import net.minecraft.inventory.IInventory
 import net.minecraft.item.{ItemStack, Item}
 import net.minecraftforge.fluids.FluidStack
 
 object implicits {
 
-  // Utilities for TEBarrel (scala friendly)
-  implicit class TEBarrelAdapter(val e: TEBarrel) extends AnyVal {
+  implicit final class IInventoryAdapter(val inv: IInventory) extends AnyVal {
 
-    def fluidStackOpt: Option[FluidStack] = Option(e.getFluidStack)
+    def getSlotOpt(i: Int) = Option(inv.getStackInSlot(i))
 
-    def slotOpt(i: Int) = Option(e.getStackInSlot(i))
-
-    def ifSlotAvailable[T](i: Int)(f: ItemStack => T): Unit = {
-      val a = e.getStackInSlot(i)
-      if (a != null)
-        f(a)
+    // equal Option#foreach
+    @inline def ifNonEmptySlot[T](i: Int)(f: ItemStack => T): Unit = {
+      val is = inv.getStackInSlot(i)
+      if (is != null) f(is)
     }
+
+    @inline def getSlotOrElse(i: Int)(default: ItemStack): ItemStack = {
+      val is = inv.getStackInSlot(i)
+      if (is != null) default else is
+    }
+
+  }
+
+  implicit final class TEBarrelAdapter(val e: TEBarrel) extends AnyVal {
+
+    @inline def fluidStackOpt: Option[FluidStack] = Option(e.getFluidStack)
   }
 
 }
