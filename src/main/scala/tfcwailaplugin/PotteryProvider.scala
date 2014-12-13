@@ -47,6 +47,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
 
       stack.getItem match {
         // solid container
+        // TODO: add food information
         case i: ItemPotterySmallVessel if stack.getItemDamage == 1 & tag != null =>
           if (tag.hasKey("Items")) {
             val bag = i.loadBagInventory(stack)
@@ -58,6 +59,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
           }
         // liquid container(molten metal)
         case i: ItemPotterySmallVessel if stack.getItemDamage == 2 && tag != null =>
+          // https://github.com/Deadrik/TFCraft/blob/41eaf222c0310cef84a6fd5d9334e8d11a15263a/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L282
           if (tag.hasKey("MetalType")) {
             val s = tag.getString("MetalType")
             val a = s"${EnumChatFormatting.DARK_GREEN}${StatCollector.translateToLocal("gui.metal." + s.replace(" ", ""))}"

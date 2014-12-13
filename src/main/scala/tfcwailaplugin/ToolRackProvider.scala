@@ -15,7 +15,7 @@ object ToolRackProvider extends ProviderBase[TileEntityToolRack] with CacheableI
         val hitX = v.xCoord - v.xCoord.floor
         val hitY = v.yCoord - v.yCoord.floor
 
-        // https://github.com/Deadrik/TFCraft/blob/master/src/Common/com/bioxx/tfc/Blocks/Devices/BlockToolRack.java#L82
+        // https://github.com/Deadrik/TFCraft/blob/f5d99e045398ff44a8410f5ad309583b293cacee/src/Common/com/bioxx/tfc/Blocks/Devices/BlockToolRack.java#L82
         val result = {
           if (hitX < 0.5 && hitY > 0.5)
             tr.getStackInSlot(0)
