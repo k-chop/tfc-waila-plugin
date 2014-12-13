@@ -18,23 +18,25 @@ object PotteryProvider extends ProviderBase[TEPottery] {
       case e: TEPottery =>
         val pos = accessor.getPosition
 
-        if (ForgeDirection.getOrientation(pos.sideHit) == ForgeDirection.UP) {
-          val v = pos.hitVec
-          val hitX = v.xCoord - v.xCoord.floor
-          val hitZ = v.zCoord - v.zCoord.floor
+        if (e.straw < 8) {
+          if (ForgeDirection.getOrientation(pos.sideHit) == ForgeDirection.UP) {
+            val v = pos.hitVec
+            val hitX = v.xCoord - v.xCoord.floor
+            val hitZ = v.zCoord - v.zCoord.floor
 
-          // https://github.com/Deadrik/TFCraft/blob/e4f01372ebf8a458705daa73faa6374d2164d38b/src/Common/com/bioxx/tfc/Blocks/Devices/BlockPottery.java#L117
-          if (hitX < 0.5 && hitZ < 0.5)
-            e.getStackInSlot(0)
-          else if (hitX > 0.5 && hitZ < 0.5)
-            e.getStackInSlot(1)
-          else if (hitX < 0.5 && hitZ > 0.5)
-            e.getStackInSlot(2)
-          else if (hitX > 0.5 && hitZ > 0.5)
-            e.getStackInSlot(3)
-          else null
+            // https://github.com/Deadrik/TFCraft/blob/e4f01372ebf8a458705daa73faa6374d2164d38b/src/Common/com/bioxx/tfc/Blocks/Devices/BlockPottery.java#L117
+            if (hitX < 0.5 && hitZ < 0.5)
+              e.getStackInSlot(0)
+            else if (hitX > 0.5 && hitZ < 0.5)
+              e.getStackInSlot(1)
+            else if (hitX < 0.5 && hitZ > 0.5)
+              e.getStackInSlot(2)
+            else if (hitX > 0.5 && hitZ > 0.5)
+              e.getStackInSlot(3)
+            else null
+          } else null
         } else null
-      case _ => null
+      case _ => null // null null null null...
     }
   }
 
@@ -75,7 +77,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
             if (total - temp < 11)
               tooltip.add(s"${EnumChatFormatting.WHITE}${StatCollector.translateToLocal("gui.ItemHeat.Liquid")}")
             else
-              tooltip.add(s"${EnumChatFormatting.WHITE} ${StatCollector.translateToLocal("gui.ItemHeat.Solidified")}")
+              tooltip.add(s"${EnumChatFormatting.WHITE}${StatCollector.translateToLocal("gui.ItemHeat.Solidified")}")
           }
         case _ =>
       }
