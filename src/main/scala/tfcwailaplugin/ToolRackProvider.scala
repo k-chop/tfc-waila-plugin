@@ -5,19 +5,15 @@ import com.bioxx.tfc.TileEntities.TileEntityToolRack
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
-import net.minecraftforge.common.util.ForgeDirection
-
 object ToolRackProvider extends ProviderBase[TileEntityToolRack] with CacheableItemStack {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
       case tr: TileEntityToolRack =>
         val pos = accessor.getPosition
-        val hitSide = ForgeDirection.getOrientation(pos.sideHit)
         val v = pos.hitVec
         val hitX = v.xCoord - v.xCoord.floor
         val hitY = v.yCoord - v.yCoord.floor
-        val dir = accessor.getMetadata
 
         // https://github.com/Deadrik/TFCraft/blob/master/src/Common/com/bioxx/tfc/Blocks/Devices/BlockToolRack.java#L82
         val result = {
