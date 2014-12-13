@@ -1,15 +1,11 @@
 package tfcwailaplugin
 
-import java.util.{List => JList}
-
 import com.bioxx.tfc.TFCBlocks
 import com.bioxx.tfc.TileEntities.TileEntityToolRack
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
 import net.minecraftforge.common.util.ForgeDirection
-
-import scala.collection.mutable
 
 object ToolRackProvider extends ProviderBase[TileEntityToolRack] with CacheableItemStack {
 

@@ -3,11 +3,8 @@ package tfcwailaplugin
 import com.bioxx.tfc.api.Constant.Global
 import com.bioxx.tfc.{TFCBlocks, TFCItems}
 import com.bioxx.tfc.TileEntities.TEOre
-import cpw.mods.fml.common.FMLLog
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
-
-import scala.collection.mutable
 
 
 object OreProvider extends ProviderBase[TEOre] with CacheableItemStack {

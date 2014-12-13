@@ -2,8 +2,7 @@ package tfcwailaplugin
 
 import java.util.{List => JList}
 
-import codechicken.lib.raytracer.RayTracer
-import com.bioxx.tfc.Items.Pottery.{ItemPotterySmallVessel, ItemPotteryBase}
+import com.bioxx.tfc.Items.Pottery.ItemPotterySmallVessel
 import com.bioxx.tfc.TileEntities.TEPottery
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
