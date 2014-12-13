@@ -2,10 +2,12 @@ package tfcwailaplugin
 
 import java.util.{List => JList}
 
+import com.bioxx.tfc.Core.TFC_Time
 import com.bioxx.tfc.Items.Pottery.ItemPotterySmallVessel
 import com.bioxx.tfc.TileEntities.TEPottery
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
+import net.minecraft.util.{StatCollector, EnumChatFormatting}
 import net.minecraftforge.common.util.ForgeDirection
 
 
@@ -41,14 +43,38 @@ object PotteryProvider extends ProviderBase[TEPottery] {
                             accessor: IWailaDataAccessor,
                             config: IWailaConfigHandler): JList[String] = {
     if (stack != null) {
+      val tag = stack.stackTagCompound
 
       stack.getItem match {
-        case i: ItemPotterySmallVessel =>
-          val bag = i.loadBagInventory(stack)
-          if (bag != null)
-            bag.filter(_ != null).foreach { is =>
-              tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
+        // solid container
+        case i: ItemPotterySmallVessel if stack.getItemDamage == 1 & tag != null =>
+          if (tag.hasKey("Items")) {
+            val bag = i.loadBagInventory(stack)
+            if (bag != null) {
+              bag.filter(_ != null).foreach { is =>
+                tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
+              }
             }
+          }
+        // liquid container(molten metal)
+        case i: ItemPotterySmallVessel if stack.getItemDamage == 2 && tag != null =>
+          if (tag.hasKey("MetalType")) {
+            val s = tag.getString("MetalType")
+            val a = s"${EnumChatFormatting.DARK_GREEN}${StatCollector.translateToLocal("gui.metal." + s.replace(" ", ""))}"
+            val b = if (tag.hasKey("MetalAmount")) {
+              val amount = tag.getInteger("MetalAmount")
+              s" ($amount Unit)"
+            } else ""
+            tooltip.add(a + b)
+          }
+          if (tag.hasKey("TempTimer")) {
+            val total = TFC_Time.getTotalHours
+            val temp = tag.getLong("TempTimer")
+            if (total - temp < 11)
+              tooltip.add(s"${EnumChatFormatting.WHITE}${StatCollector.translateToLocal("gui.ItemHeat.Liquid")}")
+            else
+              tooltip.add(s"${EnumChatFormatting.WHITE} ${StatCollector.translateToLocal("gui.ItemHeat.Solidified")}")
+          }
         case _ =>
       }
     }
