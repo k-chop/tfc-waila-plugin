@@ -26,6 +26,11 @@ object Providers {
 
     FMLLog.info("ToolRackProvider")
     registrar.registerStackProvider(ToolRackProvider, classOf[TileEntityToolRack])
+
+    FMLLog.info("LogPileProvider")
+    registrar.registerBodyProvider(LogPileProvider, classOf[TELogPile])
+    registrar.registerSyncedNBTKey("Items", classOf[TELogPile])
+
   }
 
 }
