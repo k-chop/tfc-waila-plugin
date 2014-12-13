@@ -10,9 +10,7 @@ import net.minecraft.item.ItemStack
 import scala.collection.mutable
 
 
-object OreProvider extends ProviderBase[TEOre] {
-
-  private[this] val cache = mutable.WeakHashMap.empty[Int, ItemStack]
+object OreProvider extends ProviderBase[TEOre] with CacheableItemStack {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     val meta = accessor.getMetadata

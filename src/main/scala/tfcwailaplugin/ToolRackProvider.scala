@@ -11,9 +11,7 @@ import net.minecraftforge.common.util.ForgeDirection
 
 import scala.collection.mutable
 
-object ToolRackProvider extends ProviderBase[TileEntityToolRack] {
-
-  private[this] val cache = mutable.WeakHashMap.empty[Int, ItemStack]
+object ToolRackProvider extends ProviderBase[TileEntityToolRack] with CacheableItemStack {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
