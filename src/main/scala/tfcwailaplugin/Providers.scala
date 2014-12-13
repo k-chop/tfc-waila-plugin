@@ -29,7 +29,12 @@ object Providers {
 
     FMLLog.info("LogPileProvider")
     registrar.registerBodyProvider(LogPileProvider, classOf[TELogPile])
-    registrar.registerSyncedNBTKey("Items", classOf[TELogPile])
+    //registrar.registerSyncedNBTKey("Items", classOf[TELogPile])
+
+    FMLLog.info("IngotPileProvider")
+    registrar.registerStackProvider(IngotPileProvider, classOf[TEIngotPile])
+    registrar.registerHeadProvider(IngotPileProvider, classOf[TEIngotPile])
+    registrar.registerBodyProvider(IngotPileProvider, classOf[TEIngotPile])
 
   }
 
