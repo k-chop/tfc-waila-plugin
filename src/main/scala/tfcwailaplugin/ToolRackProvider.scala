@@ -18,50 +18,21 @@ object ToolRackProvider extends ProviderBase[TileEntityToolRack] with CacheableI
         val hitZ = v.zCoord - v.zCoord.floor
         val dir = accessor.getMetadata
 
+        // 0(south) | 2(north) => X
+        // 1(west) | 3(east)  => Z
+        val localX = if (dir % 2 == 0) hitX else hitZ
+
         // https://github.com/Deadrik/TFCraft/blob/f5d99e045398ff44a8410f5ad309583b293cacee/src/Common/com/bioxx/tfc/Blocks/Devices/BlockToolRack.java#L82
-        val result = dir match {
-          case 0 => // south
-            if (hitX < 0.5 && hitY > 0.5)
-              tr.getStackInSlot(0)
-            else if (hitX > 0.5 && hitY > 0.5)
-              tr.getStackInSlot(1)
-            else if (hitX < 0.5)
-              tr.getStackInSlot(2)
-            else if (hitX > 0.5)
-              tr.getStackInSlot(3)
-            else null
-          case 1 => // west
-            if(hitZ < 0.5 && hitY > 0.5)
-              tr.getStackInSlot(0)
-            else if(hitZ > 0.5 && hitY > 0.5)
-              tr.getStackInSlot(1)
-            else if(hitZ < 0.5)
-              tr.getStackInSlot(2)
-            else if(hitZ > 0.5)
-              tr.getStackInSlot(3)
-            else null
-          case 2 => // north
-            if(hitX < 0.5 && hitY > 0.5)
-              tr.getStackInSlot(0)
-            else if(hitX > 0.5 && hitY > 0.5)
-              tr.getStackInSlot(1)
-            else if(hitX < 0.5)
-              tr.getStackInSlot(2)
-            else if(hitX > 0.5)
-              tr.getStackInSlot(3)
-            else null
-          case 3 => // east
-            if(hitZ < 0.5 && hitY > 0.5)
-              tr.getStackInSlot(0)
-            else if(hitZ > 0.5 && hitY > 0.5)
-              tr.getStackInSlot(1)
-            else if(hitZ < 0.5)
-              tr.getStackInSlot(2)
-            else if(hitZ > 0.5)
-              tr.getStackInSlot(3)
-            else null
-          case _ =>
-            null
+        val result = {
+          if (localX < 0.5 && hitY > 0.5)
+            tr.getStackInSlot(0)
+          else if (localX > 0.5 && hitY > 0.5)
+            tr.getStackInSlot(1)
+          else if (localX < 0.5)
+            tr.getStackInSlot(2)
+          else if (localX > 0.5)
+            tr.getStackInSlot(3)
+          else null
         }
         if (result == null) { // selecting empty slot on toolRack
           // fix incorrect woodName
