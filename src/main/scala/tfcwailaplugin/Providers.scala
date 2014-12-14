@@ -3,7 +3,7 @@ package tfcwailaplugin
 import cpw.mods.fml.common.FMLLog
 import mcp.mobius.waila.api.IWailaRegistrar
 
-import com.bioxx.tfc.TileEntities.{TEBarrel, TEWorldItem, TECrop}
+import com.bioxx.tfc.TileEntities._
 
 object Providers {
 
@@ -16,6 +16,25 @@ object Providers {
 
     FMLLog.info("BarrelProvider")
     registrar.registerBodyProvider(BarrelProvider, classOf[TEBarrel])
+
+    FMLLog.info("OreProvider")
+    registrar.registerStackProvider(OreProvider, classOf[TEOre])
+
+    FMLLog.info("PotteryProvider")
+    registrar.registerStackProvider(PotteryProvider, classOf[TEPottery])
+    registrar.registerBodyProvider(PotteryProvider, classOf[TEPottery])
+
+    FMLLog.info("ToolRackProvider")
+    registrar.registerStackProvider(ToolRackProvider, classOf[TileEntityToolRack])
+
+    FMLLog.info("LogPileProvider")
+    registrar.registerBodyProvider(LogPileProvider, classOf[TELogPile])
+    //registrar.registerSyncedNBTKey("Items", classOf[TELogPile])
+
+    FMLLog.info("IngotPileProvider")
+    registrar.registerStackProvider(IngotPileProvider, classOf[TEIngotPile])
+    registrar.registerHeadProvider(IngotPileProvider, classOf[TEIngotPile])
+    registrar.registerBodyProvider(IngotPileProvider, classOf[TEIngotPile])
 
   }
 

@@ -1,12 +1,8 @@
 package tfcwailaplugin
 
-import java.util.{List => JList}
-
-import com.bioxx.tfc.TFCItems
-import com.bioxx.tfc.TileEntities.{TEWorldItem, TECrop}
-import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor, IWailaDataProvider}
+import com.bioxx.tfc.TileEntities.TEWorldItem
+import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
-import net.minecraft.util.{EnumChatFormatting => EColor, StatCollector}
 
 object WorldItemProvider extends ProviderBase[TEWorldItem] {
 

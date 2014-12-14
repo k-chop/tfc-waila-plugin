@@ -1,13 +1,9 @@
 package tfcwailaplugin
 
-import java.util.{List => JList}
-
 import com.bioxx.tfc.Food.{CropIndexPepper, CropIndex, CropManager}
 import com.bioxx.tfc.TileEntities.TECrop
-import cpw.mods.fml.common.FMLLog
-import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor, IWailaDataProvider}
+import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
-import net.minecraft.util.{EnumChatFormatting => EColor }
 
 
 object CropProvider extends ProviderBase[TECrop] {
