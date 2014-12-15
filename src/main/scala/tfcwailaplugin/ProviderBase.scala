@@ -1,7 +1,5 @@
 package tfcwailaplugin
 
-import java.util.List
-
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor, IWailaDataProvider}
 import net.minecraft.item.ItemStack
 

@@ -29,6 +29,7 @@ object Providers {
 
     FMLLog.info("LogPileProvider")
     registrar.registerBodyProvider(LogPileProvider, classOf[TELogPile])
+    registrar.registerNBTProvider(LogPileProvider, classOf[TELogPile])
 
     FMLLog.info("IngotPileProvider")
     registrar.registerStackProvider(IngotPileProvider, classOf[TEIngotPile])
