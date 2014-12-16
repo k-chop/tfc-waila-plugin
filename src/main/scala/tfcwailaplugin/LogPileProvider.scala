@@ -54,7 +54,7 @@ object LogPileProvider extends ProviderBase[TELogPile] {
 
         // TODO: config
         // 1. show number of logs
-        /* tooltip.add(s"in ${lp.getNumberOfLogs} logs") */
+        /* tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs") */
         // 2. show logs each slot
         /* items.foreach { is =>
           tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
