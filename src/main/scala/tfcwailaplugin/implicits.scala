@@ -1,6 +1,12 @@
 package tfcwailaplugin
 
+import java.util
+
+import com.bioxx.tfc.Food.ItemFoodTFC
 import com.bioxx.tfc.TileEntities.TEBarrel
+import com.bioxx.tfc.api.Interfaces.IFood
+import com.bioxx.tfc.api.Util.Helper
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fluids.FluidStack
@@ -39,6 +45,20 @@ object implicits {
   implicit final class TEBarrelAdapter(val e: TEBarrel) extends AnyVal {
 
     @inline def fluidStackOpt: Option[FluidStack] = Option(e.getFluidStack)
+  }
+
+  implicit final class ItemFoodTFCAdapter(val food: ItemFoodTFC) extends AnyVal {
+
+    // https://github.com/Deadrik/TFCraft/blob/9da2409d74b5de3b2e252528e582a6fd9241cd28/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L304
+    // return "<name> <weight>oz <decay>%"
+    @inline def simpleInformation(is: ItemStack): String = {
+      import net.minecraft.util.EnumChatFormatting._
+
+      val decay = is.getTagCompound.getFloat("foodDecay")
+      val weight = Helper.roundNumber(is.getTagCompound.getFloat("foodWeight"), 100)
+      val decayStr = if (decay <= 0) "" else s" $DARK_GRAY${Helper.roundNumber(decay / weight * 100, 10)}%"
+      s"$GOLD${is.getDisplayName} $WHITE${weight}oz $decayStr"
+    }
   }
 
 }

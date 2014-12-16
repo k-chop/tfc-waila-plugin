@@ -3,13 +3,16 @@ package tfcwailaplugin
 import java.util.{List => JList}
 
 import com.bioxx.tfc.Core.TFC_Time
+import com.bioxx.tfc.Food.ItemFoodTFC
 import com.bioxx.tfc.Items.Pottery.ItemPotterySmallVessel
 import com.bioxx.tfc.TileEntities.TEPottery
+import com.bioxx.tfc.api.Interfaces.IFood
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 import net.minecraft.util.{StatCollector, EnumChatFormatting}
 import net.minecraftforge.common.util.ForgeDirection
 
+import implicits.ItemFoodTFCAdapter
 
 object PotteryProvider extends ProviderBase[TEPottery] {
 
@@ -43,19 +46,26 @@ object PotteryProvider extends ProviderBase[TEPottery] {
   override def getWailaBody(stack: ItemStack,
                             tooltip: JList[String],
                             accessor: IWailaDataAccessor,
-                            config: IWailaConfigHandler): JList[String] = {
+    config: IWailaConfigHandler): JList[String] = {
+    def T(str: String) = StatCollector.translateToLocal(str)
+
     if (stack != null) {
       val tag = stack.stackTagCompound
 
       stack.getItem match {
         // solid container
-        // TODO: add food information
         case i: ItemPotterySmallVessel if stack.getItemDamage == 1 & tag != null =>
           if (tag.hasKey("Items")) {
             val bag = i.loadBagInventory(stack)
             if (bag != null) {
               bag.filter(_ != null).foreach { is =>
-                tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
+                val str = is.getItem match {
+                  case food: ItemFoodTFC =>
+                    food.simpleInformation(is)
+                  case _ =>
+                    s"${is.getDisplayName} x${is.stackSize}"
+                }
+                tooltip.add(str)
               }
             }
           }
