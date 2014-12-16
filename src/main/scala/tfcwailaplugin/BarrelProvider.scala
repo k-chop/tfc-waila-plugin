@@ -7,7 +7,6 @@ import com.bioxx.tfc.api.Food
 import com.bioxx.tfc.api.Interfaces.IFood
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.{Item, ItemStack}
-import com.bioxx.tfc.api.Enums.EnumFoodGroup.{Fruit, Vegetable, Protein}
 import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
@@ -16,12 +15,16 @@ import implicits.{IInventoryAdapter, TEBarrelAdapter, ItemStackAdapter}
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
-  private[this] def isValidFoodGroup: PartialFunction[Item, Boolean] = {
-    case f: IFood => f.getFoodGroup match {
-      case Fruit | Vegetable | Protein => true
+  private[this] def isValidFoodGroup(item: Item): Boolean = {
+    import com.bioxx.tfc.api.Enums.EnumFoodGroup._
+
+    item match {
+      case f: IFood => f.getFoodGroup match {
+        case Fruit | Vegetable | Protein => true
+        case _ => false
+      }
       case _ => false
     }
-    case _ => false
   }
 
   private[this] def stateString(b: TEBarrel): String = (for {
