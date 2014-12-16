@@ -9,7 +9,8 @@ object Providers {
 
   def init(registrar: IWailaRegistrar): Unit = {
     FMLLog.info("CropProvider")
-    registrar.registerStackProvider(CropProvider, classOf[TECrop])
+    registrar.registerHeadProvider(CropProvider, classOf[TECrop])
+    registrar.registerBodyProvider(CropProvider, classOf[TECrop])
 
     FMLLog.info("WorldItemProvider")
     registrar.registerStackProvider(WorldItemProvider, classOf[TEWorldItem])
@@ -36,7 +37,7 @@ object Providers {
     registrar.registerHeadProvider(IngotPileProvider, classOf[TEIngotPile])
     registrar.registerBodyProvider(IngotPileProvider, classOf[TEIngotPile])
 
-    FMLLog.info("TEFoodPrep")
+    FMLLog.info("FoodPrepProvider")
     registrar.registerBodyProvider(FoodPrepProvider, classOf[TEFoodPrep])
     registrar.registerNBTProvider(FoodPrepProvider, classOf[TEFoodPrep])
 
