@@ -50,10 +50,19 @@ object LogPileProvider extends ProviderBase[TELogPile] {
     accessor.getTileEntity match {
       case lp: TELogPile =>
         val tags = accessor.getNBTData
-        //tooltip.add(s"in ${lp.getNumberOfLogs} logs")
         val items = readItemsFromTagList( tags.getTagList("Items", NBT.TAG_COMPOUND) )
-        items.foreach { is =>
+
+        // TODO: config
+        // 1. show number of logs
+        /* tooltip.add(s"in ${lp.getNumberOfLogs} logs") */
+        // 2. show logs each slot
+        /* items.foreach { is =>
           tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
+        } */
+        // 3. show logs each woodType
+        items.groupBy(_.getItemDamage).foreach { case (i, iss) =>
+          val stackSizeSum = iss.foldLeft(0){ (acc, is) => acc + is.stackSize }
+          tooltip.add(s"${iss.head.getDisplayName} x$stackSizeSum")
         }
       case _ =>
     }
