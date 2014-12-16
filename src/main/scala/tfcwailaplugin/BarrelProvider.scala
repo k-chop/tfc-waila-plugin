@@ -12,7 +12,7 @@ import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
 
-import implicits.{IInventoryAdapter, TEBarrelAdapter}
+import implicits.{IInventoryAdapter, TEBarrelAdapter, ItemStackAdapter}
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
@@ -70,7 +70,7 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
           }
           if (3 < itemCount) tooltip.add(s"... ($itemCount items)")
         } else
-          e.ifNonEmptySlot(0)(item => tooltip.add(s"${item.getDisplayName} x${item.stackSize}"))
+          e.ifNonEmptySlot(0)(is => tooltip.add(is.toInfoString))
         // fluid container
         e.fluidStackOpt.foreach { f =>
           tooltip.add(s"${f.getLocalizedName} : ${f.amount} mb")

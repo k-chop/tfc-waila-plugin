@@ -46,12 +46,22 @@ object implicits {
 
     @inline def fluidStackOpt: Option[FluidStack] = Option(e.getFluidStack)
   }
+  
+  implicit final class ItemStackAdapter(val is: ItemStack) extends AnyVal {
+    import net.minecraft.util.EnumChatFormatting._
+
+    @inline def toInfoString: String = is.getItem match {
+      case i: ItemFoodTFC => i.toSimpleInfoString(is)
+      case i if i == null => s"$WHITE*** ${GOLD}ItemStack is null! $WHITE***"
+      case i => s"${is.getDisplayName} x${is.stackSize}"
+    }
+  }
 
   implicit final class ItemFoodTFCAdapter(val food: ItemFoodTFC) extends AnyVal {
 
     // https://github.com/Deadrik/TFCraft/blob/9da2409d74b5de3b2e252528e582a6fd9241cd28/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L304
     // return "<name> <weight>oz <decay>%"
-    @inline def simpleInformation(is: ItemStack): String = {
+    @inline def toSimpleInfoString(is: ItemStack): String = {
       import net.minecraft.util.EnumChatFormatting._
 
       val decay = is.getTagCompound.getFloat("foodDecay")

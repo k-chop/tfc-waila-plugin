@@ -6,13 +6,13 @@ import com.bioxx.tfc.Core.TFC_Time
 import com.bioxx.tfc.Food.ItemFoodTFC
 import com.bioxx.tfc.Items.Pottery.ItemPotterySmallVessel
 import com.bioxx.tfc.TileEntities.TEPottery
-import com.bioxx.tfc.api.Interfaces.IFood
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 import net.minecraft.util.{StatCollector, EnumChatFormatting}
 import net.minecraftforge.common.util.ForgeDirection
 
 import implicits.ItemFoodTFCAdapter
+import implicits.ItemStackAdapter
 
 object PotteryProvider extends ProviderBase[TEPottery] {
 
@@ -61,9 +61,9 @@ object PotteryProvider extends ProviderBase[TEPottery] {
               bag.filter(_ != null).foreach { is =>
                 val str = is.getItem match {
                   case food: ItemFoodTFC =>
-                    food.simpleInformation(is)
+                    food.toSimpleInfoString(is)
                   case _ =>
-                    s"${is.getDisplayName} x${is.stackSize}"
+                    is.toInfoString
                 }
                 tooltip.add(str)
               }
