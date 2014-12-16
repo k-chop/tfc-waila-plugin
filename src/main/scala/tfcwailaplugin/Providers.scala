@@ -8,6 +8,11 @@ import com.bioxx.tfc.TileEntities._
 object Providers {
 
   def init(registrar: IWailaRegistrar): Unit = {
+
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.numberoflog", "Show number of log", false)
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.logperslot", "Show log per slot", false)
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.nologinfo", "No log pile Information", false)
+
     FMLLog.info("CropProvider")
     registrar.registerHeadProvider(CropProvider, classOf[TECrop])
     registrar.registerBodyProvider(CropProvider, classOf[TECrop])

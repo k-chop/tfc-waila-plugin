@@ -4,12 +4,10 @@ import java.util.{List => JList}
 
 import com.bioxx.tfc.TileEntities.TELogPile
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
-import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
-import net.minecraftforge.common.util.Constants.NBT
 
 object LogPileProvider extends ProviderBase[TELogPile] {
 
@@ -28,21 +26,25 @@ object LogPileProvider extends ProviderBase[TELogPile] {
                             config: IWailaConfigHandler): JList[String] = {
 
     accessor.getTileEntity match {
-      case lp: TELogPile =>
+      case lp: TELogPile if !config.getConfig("tfcwailaplugin.nologinfo") =>
         val tags = accessor.getNBTData
         val items = NBTUtil.readItemStacks(tags)
 
-        // TODO: config
-        // 1. show number of logs
-        /* tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs") */
-        // 2. show logs each slot
-        /* items.foreach { is =>
-          tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
-        } */
-        // 3. show logs each woodType
-        items.groupBy(_.getItemDamage).foreach { case (i, iss) =>
-          val stackSizeSum = iss.foldLeft(0){ (acc, is) => acc + is.stackSize }
-          tooltip.add(s"${iss.head.getDisplayName} x$stackSizeSum")
+        // show number of logs
+        if (config.getConfig("tfcwailaplugin.numberoflog")) {
+          tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs")
+        }
+        // show logs each slot
+        if (config.getConfig("tfcwailaplugin.logperslot")) {
+          items.foreach { is =>
+            tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
+          }
+        } else {
+          // show logs grouped by woodType
+          items.groupBy(_.getItemDamage).foreach { case (i, iss) =>
+            val stackSizeSum = iss.foldLeft(0){ (acc, is) => acc + is.stackSize }
+            tooltip.add(s"${iss.head.getDisplayName} x$stackSizeSum")
+          }
         }
       case _ =>
     }
