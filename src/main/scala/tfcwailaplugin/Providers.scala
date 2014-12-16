@@ -36,6 +36,10 @@ object Providers {
     registrar.registerHeadProvider(IngotPileProvider, classOf[TEIngotPile])
     registrar.registerBodyProvider(IngotPileProvider, classOf[TEIngotPile])
 
+    FMLLog.info("TEFoodPrep")
+    registrar.registerBodyProvider(FoodPrepProvider, classOf[TEFoodPrep])
+    registrar.registerNBTProvider(FoodPrepProvider, classOf[TEFoodPrep])
+
   }
 
 }
