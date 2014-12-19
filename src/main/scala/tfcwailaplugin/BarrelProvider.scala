@@ -34,16 +34,17 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
     import net.minecraft.util.StatCollector.translateToLocal
 
     def isBrining =
-      b.recipe != null && fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && isValidFoodGroup(is.getItem)
+      fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && Option(b.recipe).nonEmpty && isValidFoodGroup(is.getItem)
 
     def isPickling =
-      b.recipe == null && !Food.isPickled(is) && Food.isBrined(is) &&
+      fs.getFluid == TFCFluid.VINEGAR && !Food.isPickled(is) && Food.isBrined(is) &&
         Food.getWeight(is) / fs.amount <= Global.FOOD_MAX_WEIGHT / b.getMaxLiquid &&
-        fs.getFluid == TFCFluid.VINEGAR && isValidFoodGroup(is.getItem)
+        Option(b.recipe).isEmpty && isValidFoodGroup(is.getItem)
 
     def isPreserving =
-      b.recipe == null && Food.isPickled(is) && fs.getFluid == TFCFluid.VINEGAR &&
-        Food.getWeight(is) / b.getFluidStack.amount <= Global.FOOD_MAX_WEIGHT/b.getMaxLiquid*2
+      fs.getFluid == TFCFluid.VINEGAR && Food.isPickled(is) &&
+        Food.getWeight(is) / b.getFluidStack.amount <= Global.FOOD_MAX_WEIGHT/b.getMaxLiquid*2 &&
+        Option(b.recipe).isEmpty
 
     if (isBrining)
       s"${translateToLocal("gui.barrel.brining")}"
@@ -70,12 +71,12 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
         // solid container
         val itemCount = e.getInvCount
         if (1 <= itemCount) {
-          e.storage.view.filter(_ != null).take(3).foreach { is =>
-            tooltip.add(is.toInfoString)
+          e.storage.view.filter(_ != null).take(3).foreach {
+            tooltip add _.toInfoString
           }
           if (3 < itemCount) tooltip.add(s"... ($itemCount items)")
         } else
-          e.ifNonEmptySlot(0)(is => tooltip.add(is.toInfoString))
+          e.ifNonEmptySlot(0)(tooltip add _.toInfoString)
         // fluid container
         e.fluidStackOpt.foreach { f =>
           tooltip.add(s"${f.getLocalizedName} : ${f.amount} mb")
