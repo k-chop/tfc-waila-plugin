@@ -54,7 +54,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
 
       stack.getItem match {
         // solid container
-        case i: ItemPotterySmallVessel if stack.getItemDamage == 1 & tag != null =>
+        case i: ItemPotterySmallVessel if stack.getItemDamage == 1 && tag != null =>
           if (tag.hasKey("Items")) {
             val bag = i.loadBagInventory(stack)
             if (bag != null) {
