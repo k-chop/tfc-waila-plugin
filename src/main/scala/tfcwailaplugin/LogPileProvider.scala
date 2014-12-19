@@ -9,6 +9,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
+import implicits.ItemStackAdapter
+
 object LogPileProvider extends ProviderBase[TELogPile] {
 
   override def getNBTData(te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
@@ -37,13 +39,13 @@ object LogPileProvider extends ProviderBase[TELogPile] {
         // show logs each slot
         if (config.getConfig("tfcwailaplugin.logperslot")) {
           items.foreach { is =>
-            tooltip.add(s"${is.getDisplayName} x${is.stackSize}")
+            tooltip.add(is.toInfoString)
           }
         } else {
           // show logs grouped by woodType
-          items.groupBy(_.getItemDamage).foreach { case (i, iss) =>
-            val stackSizeSum = iss.foldLeft(0){ (acc, is) => acc + is.stackSize }
-            tooltip.add(s"${iss.head.getDisplayName} x$stackSizeSum")
+          items.groupBy(_.getItemDamage).foreach { case (_, is) =>
+            val stackSizeSum = is.foldLeft(0)(_ + _.stackSize)
+            tooltip.add(s"${is.head.getDisplayName} x$stackSizeSum")
           }
         }
       case _ =>

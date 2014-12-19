@@ -8,7 +8,6 @@ import com.bioxx.tfc.Items.Pottery.ItemPotterySmallVessel
 import com.bioxx.tfc.TileEntities.TEPottery
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
-import net.minecraft.util.{StatCollector, EnumChatFormatting}
 import net.minecraftforge.common.util.ForgeDirection
 
 import implicits.ItemFoodTFCAdapter
@@ -47,7 +46,8 @@ object PotteryProvider extends ProviderBase[TEPottery] {
                             tooltip: JList[String],
                             accessor: IWailaDataAccessor,
     config: IWailaConfigHandler): JList[String] = {
-    def T(str: String) = StatCollector.translateToLocal(str)
+    import net.minecraft.util.EnumChatFormatting._
+    import net.minecraft.util.StatCollector.translateToLocal
 
     if (stack != null) {
       val tag = stack.stackTagCompound
@@ -74,7 +74,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
           // https://github.com/Deadrik/TFCraft/blob/41eaf222c0310cef84a6fd5d9334e8d11a15263a/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L282
           if (tag.hasKey("MetalType")) {
             val s = tag.getString("MetalType")
-            val a = s"${EnumChatFormatting.DARK_GREEN}${StatCollector.translateToLocal("gui.metal." + s.replace(" ", ""))}"
+            val a = s"$DARK_GREEN${translateToLocal("gui.metal." + s.replace(" ", ""))}"
             val b = if (tag.hasKey("MetalAmount")) {
               val amount = tag.getInteger("MetalAmount")
               s" ($amount Unit)"
@@ -85,9 +85,9 @@ object PotteryProvider extends ProviderBase[TEPottery] {
             val total = TFC_Time.getTotalHours
             val temp = tag.getLong("TempTimer")
             if (total - temp < 11)
-              tooltip.add(s"${EnumChatFormatting.WHITE}${StatCollector.translateToLocal("gui.ItemHeat.Liquid")}")
+              tooltip.add(s"$WHITE${translateToLocal("gui.ItemHeat.Liquid")}")
             else
-              tooltip.add(s"${EnumChatFormatting.WHITE}${StatCollector.translateToLocal("gui.ItemHeat.Solidified")}")
+              tooltip.add(s"$WHITE${translateToLocal("gui.ItemHeat.Solidified")}")
           }
         case _ =>
       }

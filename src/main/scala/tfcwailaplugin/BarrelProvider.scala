@@ -11,7 +11,7 @@ import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
 
-import implicits.{IInventoryAdapter, TEBarrelAdapter, ItemStackAdapter}
+import implicits._
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
@@ -31,6 +31,8 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
     is <- b.getSlotOpt(0)
     fs <- b.fluidStackOpt if b.getSealed
   } yield {
+    import net.minecraft.util.StatCollector.translateToLocal
+
     def isBrining =
       b.recipe != null && fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && isValidFoodGroup(is.getItem)
 
@@ -44,11 +46,11 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
         Food.getWeight(is) / b.getFluidStack.amount <= Global.FOOD_MAX_WEIGHT/b.getMaxLiquid*2
 
     if (isBrining)
-      s"${StatCollector.translateToLocal("gui.barrel.brining")}"
+      s"${translateToLocal("gui.barrel.brining")}"
     else if (isPickling)
-      s"${StatCollector.translateToLocal("gui.barrel.pickling")}"
+      s"${translateToLocal("gui.barrel.pickling")}"
     else if (isPreserving)
-      s"${StatCollector.translateToLocal("gui.barrel.preserving")}"
+      s"${translateToLocal("gui.barrel.preserving")}"
     else
       ""
   }).getOrElse("")
@@ -68,8 +70,8 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
         // solid container
         val itemCount = e.getInvCount
         if (1 <= itemCount) {
-          e.storage.view.filter(_ != null).take(3).foreach { i =>
-            tooltip.add(s"${i.getDisplayName} x${i.stackSize}")
+          e.storage.view.filter(_ != null).take(3).foreach { is =>
+            tooltip.add(is.toInfoString)
           }
           if (3 < itemCount) tooltip.add(s"... ($itemCount items)")
         } else
