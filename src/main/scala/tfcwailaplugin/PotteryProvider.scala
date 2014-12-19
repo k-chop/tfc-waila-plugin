@@ -15,31 +15,27 @@ import implicits.ItemStackAdapter
 
 object PotteryProvider extends ProviderBase[TEPottery] {
 
-  override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
-    accessor.getTileEntity match {
-      case e: TEPottery =>
-        val pos = accessor.getPosition
+  override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = accessor.getTileEntity match {
+    case e: TEPottery =>
+      val pos = accessor.getPosition
 
-        if (e.straw < 8) {
-          if (ForgeDirection.getOrientation(pos.sideHit) == ForgeDirection.UP) {
-            val v = pos.hitVec
-            val hitX = v.xCoord - v.xCoord.floor
-            val hitZ = v.zCoord - v.zCoord.floor
+      if (e.straw < 8 && ForgeDirection.getOrientation(pos.sideHit) == ForgeDirection.UP) {
+        val v = pos.hitVec
+        val hitX = v.xCoord - v.xCoord.floor
+        val hitZ = v.zCoord - v.zCoord.floor
 
-            // https://github.com/Deadrik/TFCraft/blob/e4f01372ebf8a458705daa73faa6374d2164d38b/src/Common/com/bioxx/tfc/Blocks/Devices/BlockPottery.java#L117
-            if (hitX < 0.5 && hitZ < 0.5)
-              e.getStackInSlot(0)
-            else if (hitX > 0.5 && hitZ < 0.5)
-              e.getStackInSlot(1)
-            else if (hitX < 0.5 && hitZ > 0.5)
-              e.getStackInSlot(2)
-            else if (hitX > 0.5 && hitZ > 0.5)
-              e.getStackInSlot(3)
-            else null
-          } else null
-        } else null
-      case _ => null // null null null null...
-    }
+        // https://github.com/Deadrik/TFCraft/blob/e4f01372ebf8a458705daa73faa6374d2164d38b/src/Common/com/bioxx/tfc/Blocks/Devices/BlockPottery.java#L117
+        if (hitX < 0.5 && hitZ < 0.5)
+          e.getStackInSlot(0)
+        else if (hitX > 0.5 && hitZ < 0.5)
+          e.getStackInSlot(1)
+        else if (hitX < 0.5 && hitZ > 0.5)
+          e.getStackInSlot(2)
+        else if (hitX > 0.5 && hitZ > 0.5)
+          e.getStackInSlot(3)
+        else null
+      } else null
+    case _ => null // null null null...
   }
 
   override def getWailaBody(stack: ItemStack,
@@ -55,29 +51,18 @@ object PotteryProvider extends ProviderBase[TEPottery] {
       stack.getItem match {
         // solid container
         case i: ItemPotterySmallVessel if stack.getItemDamage == 1 && tag != null && tag.hasKey("Items") =>
-          val bag = i.loadBagInventory(stack)
-          if (bag != null) {
-            bag.filter(_ != null).foreach { is =>
-              val str = is.getItem match {
-                case food: ItemFoodTFC =>
-                  food.toSimpleInfoString(is)
-                case _ =>
-                  is.toInfoString
-              }
-              tooltip.add(str)
-            }
-          }
+          for {
+            bag <- Option(i loadBagInventory stack)
+            is <- bag if is != null
+          } tooltip.add(is.toInfoString)
 
         // liquid container(molten metal)
         case i: ItemPotterySmallVessel if stack.getItemDamage == 2 && tag != null =>
           // https://github.com/Deadrik/TFCraft/blob/41eaf222c0310cef84a6fd5d9334e8d11a15263a/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L282
-          if (tag.hasKey("MetalType")) {
+          if (tag.hasKey("MetalType") && tag.hasKey("MetalAmount")) {
             val s = tag.getString("MetalType")
             val a = s"$DARK_GREEN${translateToLocal("gui.metal." + s.replace(" ", ""))}"
-            val b = if (tag.hasKey("MetalAmount")) {
-              val amount = tag.getInteger("MetalAmount")
-              s" ($amount Unit)"
-            } else ""
+            val b = s"(${tag.getInteger("MetalAmount")} Unit)"
             tooltip.add(a + b)
           }
           if (tag.hasKey("TempTimer")) {

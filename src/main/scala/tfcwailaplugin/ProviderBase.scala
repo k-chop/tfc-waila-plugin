@@ -12,6 +12,8 @@ import net.minecraft.world.World
 
 trait ProviderBase[T] extends IWailaDataProvider {
 
+  def asTarget(te: TileEntity)(implicit ev: T <:< TileEntity): T = te.asInstanceOf[T]
+
   def getNBTData(te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     if (te != null)
       te.writeToNBT(tag)
