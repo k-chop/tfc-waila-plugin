@@ -54,21 +54,20 @@ object PotteryProvider extends ProviderBase[TEPottery] {
 
       stack.getItem match {
         // solid container
-        case i: ItemPotterySmallVessel if stack.getItemDamage == 1 && tag != null =>
-          if (tag.hasKey("Items")) {
-            val bag = i.loadBagInventory(stack)
-            if (bag != null) {
-              bag.filter(_ != null).foreach { is =>
-                val str = is.getItem match {
-                  case food: ItemFoodTFC =>
-                    food.toSimpleInfoString(is)
-                  case _ =>
-                    is.toInfoString
-                }
-                tooltip.add(str)
+        case i: ItemPotterySmallVessel if stack.getItemDamage == 1 && tag != null && tag.hasKey("Items") =>
+          val bag = i.loadBagInventory(stack)
+          if (bag != null) {
+            bag.filter(_ != null).foreach { is =>
+              val str = is.getItem match {
+                case food: ItemFoodTFC =>
+                  food.toSimpleInfoString(is)
+                case _ =>
+                  is.toInfoString
               }
+              tooltip.add(str)
             }
           }
+
         // liquid container(molten metal)
         case i: ItemPotterySmallVessel if stack.getItemDamage == 2 && tag != null =>
           // https://github.com/Deadrik/TFCraft/blob/41eaf222c0310cef84a6fd5d9334e8d11a15263a/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L282
