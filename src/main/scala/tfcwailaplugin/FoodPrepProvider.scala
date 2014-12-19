@@ -16,7 +16,7 @@ object FoodPrepProvider extends ProviderBase[TEFoodPrep] {
   override def getNBTData(te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     te match {
       case fp: TEFoodPrep =>
-        val tagList = NBTUtil.buildTagList(fp, start = 0, end = 4)
+        val tagList = NBTUtil.buildTagList(fp, start = 0, end = 5)
         tag.setTag("Items", tagList)
       case _ =>
     }
