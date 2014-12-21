@@ -1,6 +1,7 @@
 package tfcwailaplugin
 
 import com.bioxx.tfc.Core.TFCFluid
+import com.bioxx.tfc.TFCItems
 import com.bioxx.tfc.TileEntities.TEBarrel
 import com.bioxx.tfc.api.Constant.Global
 import com.bioxx.tfc.api.Food
@@ -14,12 +15,13 @@ import implicits._
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
-  private[this] def isValidFoodGroup(item: Item): Boolean = {
+  private[this] def canBriningAndPickling(item: Item): Boolean = {
     import com.bioxx.tfc.api.Enums.EnumFoodGroup._
 
     item match {
       case f: IFood => f.getFoodGroup match {
         case Fruit | Vegetable | Protein => true
+        case _ if f == TFCItems.Cheese => true
         case _ => false
       }
       case _ => false
@@ -33,12 +35,12 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
     import net.minecraft.util.StatCollector.translateToLocal
 
     def isBrining =
-      fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && Option(b.recipe).nonEmpty && isValidFoodGroup(is.getItem)
+      fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && Option(b.recipe).nonEmpty && canBriningAndPickling(is.getItem)
 
     def isPickling =
       fs.getFluid == TFCFluid.VINEGAR && !Food.isPickled(is) && Food.isBrined(is) &&
         Food.getWeight(is) / fs.amount <= Global.FOOD_MAX_WEIGHT / b.getMaxLiquid &&
-        Option(b.recipe).isEmpty && isValidFoodGroup(is.getItem)
+        Option(b.recipe).isEmpty && canBriningAndPickling(is.getItem)
 
     def isPreserving =
       fs.getFluid == TFCFluid.VINEGAR && Food.isPickled(is) &&
