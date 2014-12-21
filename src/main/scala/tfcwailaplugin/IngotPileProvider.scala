@@ -7,7 +7,7 @@ import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 
-object IngotPileProvider extends ProviderBase[TEIngotPile] with CacheableItemStack {
+object IngotPileProvider extends ProviderBase[TEIngotPile] with Cacheable[Int, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
