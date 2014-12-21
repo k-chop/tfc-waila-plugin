@@ -7,45 +7,50 @@ import com.bioxx.tfc.api.Food
 import com.bioxx.tfc.api.Interfaces.IFood
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.{Item, ItemStack}
-import com.bioxx.tfc.api.Enums.EnumFoodGroup.{Fruit, Vegetable, Protein}
-import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
 
-import implicits.{IInventoryAdapter, TEBarrelAdapter}
+import implicits._
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
-  private[this] def isValidFoodGroup: PartialFunction[Item, Boolean] = {
-    case f: IFood => f.getFoodGroup match {
-      case Fruit | Vegetable | Protein => true
+  private[this] def isValidFoodGroup(item: Item): Boolean = {
+    import com.bioxx.tfc.api.Enums.EnumFoodGroup._
+
+    item match {
+      case f: IFood => f.getFoodGroup match {
+        case Fruit | Vegetable | Protein => true
+        case _ => false
+      }
       case _ => false
     }
-    case _ => false
   }
 
   private[this] def stateString(b: TEBarrel): String = (for {
-    is <- b.getSlotOpt(0)
-    fs <- b.fluidStackOpt if b.getSealed
+    is <- Option(b.getStackInSlot(0))
+    fs <- Option(b.getFluidStack) if b.getSealed
   } yield {
+    import net.minecraft.util.StatCollector.translateToLocal
+
     def isBrining =
-      b.recipe != null && fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && isValidFoodGroup(is.getItem)
+      fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && Option(b.recipe).nonEmpty && isValidFoodGroup(is.getItem)
 
     def isPickling =
-      b.recipe == null && !Food.isPickled(is) && Food.isBrined(is) &&
+      fs.getFluid == TFCFluid.VINEGAR && !Food.isPickled(is) && Food.isBrined(is) &&
         Food.getWeight(is) / fs.amount <= Global.FOOD_MAX_WEIGHT / b.getMaxLiquid &&
-        fs.getFluid == TFCFluid.VINEGAR && isValidFoodGroup(is.getItem)
+        Option(b.recipe).isEmpty && isValidFoodGroup(is.getItem)
 
     def isPreserving =
-      b.recipe == null && Food.isPickled(is) && fs.getFluid == TFCFluid.VINEGAR &&
-        Food.getWeight(is) / b.getFluidStack.amount <= Global.FOOD_MAX_WEIGHT/b.getMaxLiquid*2
+      fs.getFluid == TFCFluid.VINEGAR && Food.isPickled(is) &&
+        Food.getWeight(is) / b.getFluidStack.amount <= Global.FOOD_MAX_WEIGHT/b.getMaxLiquid*2 &&
+        Option(b.recipe).isEmpty
 
     if (isBrining)
-      s"${StatCollector.translateToLocal("gui.barrel.brining")}"
+      s"${translateToLocal("gui.barrel.brining")}"
     else if (isPickling)
-      s"${StatCollector.translateToLocal("gui.barrel.pickling")}"
+      s"${translateToLocal("gui.barrel.pickling")}"
     else if (isPreserving)
-      s"${StatCollector.translateToLocal("gui.barrel.preserving")}"
+      s"${translateToLocal("gui.barrel.preserving")}"
     else
       ""
   }).getOrElse("")
@@ -65,14 +70,14 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
         // solid container
         val itemCount = e.getInvCount
         if (1 <= itemCount) {
-          e.storage.view.filter(_ != null).take(3).foreach { i =>
-            tooltip.add(s"${i.getDisplayName} x${i.stackSize}")
+          e.storage.view.filter(_ != null).take(3).foreach {
+            tooltip add _.toInfoString
           }
           if (3 < itemCount) tooltip.add(s"... ($itemCount items)")
         } else
-          e.ifNonEmptySlot(0)(item => tooltip.add(s"${item.getDisplayName} x${item.stackSize}"))
+          e.ifNonEmptySlot(0)(tooltip add _.toInfoString)
         // fluid container
-        e.fluidStackOpt.foreach { f =>
+        Option(e.getFluidStack).foreach { f =>
           tooltip.add(s"${f.getLocalizedName} : ${f.amount} mb")
         }
       case _ =>

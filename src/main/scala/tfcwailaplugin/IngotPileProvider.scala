@@ -4,18 +4,16 @@ import java.util.{List => JList}
 
 import com.bioxx.tfc.TileEntities.TEIngotPile
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
-import net.minecraft.item.ItemStack
-import net.minecraft.world.World
+import net.minecraft.item.{Item, ItemStack}
 
-object IngotPileProvider extends ProviderBase[TEIngotPile] with CacheableItemStack {
+object IngotPileProvider extends ProviderBase[TEIngotPile] with Cacheable[Item, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
       case ip: TEIngotPile =>
         val is = ip.getStackInSlot(0)
         val item = is.getItem
-        val dam = is.getItemDamage
-        cache.getOrElseUpdate(dam, new ItemStack(item, 1, dam))
+        cache.getOrElseUpdate(item, new ItemStack(item, 1, is.getItemDamage))
       case _ => null
     }
   }

@@ -30,7 +30,7 @@ group= "tfcwailaplugin" // http://maven.apache.org/guides/mini/guide-naming-conv
 archivesBaseName = "tfcwailaplugin"
 
 minecraft {
-    version = "1.7.10-10.13.2.1230"
+    version = "1.7.10-10.13.2.1272"
     runDir = "eclipse"
 }
 
@@ -49,7 +49,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     compile 'codechicken:CodeChickenCore:1.7.10-1.0.4.29:dev'
     compile 'codechicken:CodeChickenLib:1.7.10-1.1.1.99:dev'
-    compile 'codechicken:NotEnoughItems:1.7.10-1.0.3.72:dev'
+    compile 'codechicken:NotEnoughItems:1.7.10-1.0.3.74:dev'
 }
 
 processResources

@@ -8,8 +8,14 @@ import com.bioxx.tfc.TileEntities._
 object Providers {
 
   def init(registrar: IWailaRegistrar): Unit = {
+
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.numberoflog", "Show number of log", false)
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.logperslot", "Show log per slot", false)
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.nologinfo", "No log pile Information", false)
+
     FMLLog.info("CropProvider")
-    registrar.registerStackProvider(CropProvider, classOf[TECrop])
+    registrar.registerHeadProvider(CropProvider, classOf[TECrop])
+    registrar.registerBodyProvider(CropProvider, classOf[TECrop])
 
     FMLLog.info("WorldItemProvider")
     registrar.registerStackProvider(WorldItemProvider, classOf[TEWorldItem])
@@ -29,12 +35,16 @@ object Providers {
 
     FMLLog.info("LogPileProvider")
     registrar.registerBodyProvider(LogPileProvider, classOf[TELogPile])
-    //registrar.registerSyncedNBTKey("Items", classOf[TELogPile])
+    registrar.registerNBTProvider(LogPileProvider, classOf[TELogPile])
 
     FMLLog.info("IngotPileProvider")
     registrar.registerStackProvider(IngotPileProvider, classOf[TEIngotPile])
     registrar.registerHeadProvider(IngotPileProvider, classOf[TEIngotPile])
     registrar.registerBodyProvider(IngotPileProvider, classOf[TEIngotPile])
+
+    FMLLog.info("FoodPrepProvider")
+    registrar.registerBodyProvider(FoodPrepProvider, classOf[TEFoodPrep])
+    registrar.registerNBTProvider(FoodPrepProvider, classOf[TEFoodPrep])
 
   }
 
