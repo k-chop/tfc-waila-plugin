@@ -1,23 +1,15 @@
 package tfcwailaplugin
 
-import java.util
-
 import com.bioxx.tfc.Food.ItemFoodTFC
-import com.bioxx.tfc.TileEntities.TEBarrel
-import com.bioxx.tfc.api.Interfaces.IFood
 import com.bioxx.tfc.api.Util.Helper
-import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
-import net.minecraftforge.fluids.FluidStack
 
 object implicits {
 
   implicit final class IInventoryAdapter(val inv: IInventory) extends AnyVal {
 
     private[this] def slot(i: Int) = inv.getStackInSlot(i)
-
-    def getSlotOpt(i: Int) = Option(inv.getStackInSlot(i))
 
     // equal Option#foreach
     @inline def ifNonEmptySlot[T](i: Int)(f: ItemStack => T): Unit = {
@@ -42,11 +34,6 @@ object implicits {
 
   }
 
-  implicit final class TEBarrelAdapter(val e: TEBarrel) extends AnyVal {
-
-    @inline def fluidStackOpt: Option[FluidStack] = Option(e.getFluidStack)
-  }
-  
   implicit final class ItemStackAdapter(val is: ItemStack) extends AnyVal {
     import net.minecraft.util.EnumChatFormatting._
 

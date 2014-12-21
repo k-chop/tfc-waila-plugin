@@ -7,7 +7,6 @@ import com.bioxx.tfc.api.Food
 import com.bioxx.tfc.api.Interfaces.IFood
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.{Item, ItemStack}
-import net.minecraft.util.StatCollector
 
 import java.util.{List => JList}
 
@@ -28,8 +27,8 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
   }
 
   private[this] def stateString(b: TEBarrel): String = (for {
-    is <- b.getSlotOpt(0)
-    fs <- b.fluidStackOpt if b.getSealed
+    is <- Option(b.getStackInSlot(0))
+    fs <- Option(b.getFluidStack) if b.getSealed
   } yield {
     import net.minecraft.util.StatCollector.translateToLocal
 
@@ -78,7 +77,7 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
         } else
           e.ifNonEmptySlot(0)(tooltip add _.toInfoString)
         // fluid container
-        e.fluidStackOpt.foreach { f =>
+        Option(e.getFluidStack).foreach { f =>
           tooltip.add(s"${f.getLocalizedName} : ${f.amount} mb")
         }
       case _ =>
