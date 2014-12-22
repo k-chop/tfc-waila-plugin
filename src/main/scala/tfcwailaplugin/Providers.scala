@@ -7,47 +7,48 @@ import com.bioxx.tfc.TileEntities._
 
 object Providers {
 
-  def init(registrar: IWailaRegistrar): Unit = {
+  private[this] sealed trait Target
+  private[this] case object Stack extends Target
+  private[this] case object Head extends Target
+  private[this] case object Body extends Target
+  private[this] case object Tail extends Target
+  private[this] case object NBT extends Target
+
+  private[this] def provide(provider: ProviderBase[_], clazz: Class[_], targets: Target*)(implicit registrar: IWailaRegistrar): Unit = {
+    targets.foreach {
+      case Stack => registrar.registerStackProvider(provider, clazz)
+      case Head => registrar.registerHeadProvider(provider, clazz)
+      case Body => registrar.registerBodyProvider(provider, clazz)
+      case Tail => registrar.registerTailProvider(provider, clazz)
+      case NBT => registrar.registerNBTProvider(provider, clazz)
+    }
+  }
+
+  def init(implicit registrar: IWailaRegistrar): Unit = {
 
     registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.numberoflog", "Show number of log", false)
     registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.logperslot", "Show log per slot", false)
     registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.nologinfo", "No log pile Information", false)
 
-    FMLLog.info("CropProvider")
-    registrar.registerHeadProvider(CropProvider, classOf[TECrop])
-    registrar.registerBodyProvider(CropProvider, classOf[TECrop])
+    provide(CropProvider, classOf[TECrop], targets = Head, Body)
 
-    FMLLog.info("WorldItemProvider")
-    registrar.registerStackProvider(WorldItemProvider, classOf[TEWorldItem])
+    provide(WorldItemProvider, classOf[TEWorldItem], targets = Stack)
 
-    FMLLog.info("BarrelProvider")
-    registrar.registerBodyProvider(BarrelProvider, classOf[TEBarrel])
+    provide(BarrelProvider, classOf[TEBarrel], targets = Body)
 
-    FMLLog.info("OreProvider")
-    registrar.registerStackProvider(OreProvider, classOf[TEOre])
+    provide(OreProvider, classOf[TEOre], targets = Stack)
 
-    FMLLog.info("PotteryProvider")
-    registrar.registerStackProvider(PotteryProvider, classOf[TEPottery])
-    registrar.registerBodyProvider(PotteryProvider, classOf[TEPottery])
+    provide(PotteryProvider, classOf[TEPottery], targets = Stack, Body)
 
-    FMLLog.info("ToolRackProvider")
-    registrar.registerStackProvider(ToolRackProvider, classOf[TileEntityToolRack])
+    provide(ToolRackProvider, classOf[TileEntityToolRack], targets = Stack)
 
-    FMLLog.info("LogPileProvider")
-    registrar.registerBodyProvider(LogPileProvider, classOf[TELogPile])
-    registrar.registerNBTProvider(LogPileProvider, classOf[TELogPile])
+    provide(LogPileProvider, classOf[TELogPile], targets = Body, NBT)
 
-    FMLLog.info("IngotPileProvider")
-    registrar.registerStackProvider(IngotPileProvider, classOf[TEIngotPile])
-    registrar.registerHeadProvider(IngotPileProvider, classOf[TEIngotPile])
-    registrar.registerBodyProvider(IngotPileProvider, classOf[TEIngotPile])
+    provide(IngotPileProvider, classOf[TEIngotPile], targets = Stack, Head, Body)
 
-    FMLLog.info("FoodPrepProvider")
-    registrar.registerBodyProvider(FoodPrepProvider, classOf[TEFoodPrep])
-    registrar.registerNBTProvider(FoodPrepProvider, classOf[TEFoodPrep])
+    provide(FoodPrepProvider, classOf[TEFoodPrep], targets = Body, NBT)
 
-    FMLLog.info("AnvilProvider")
-    registrar.registerHeadProvider(AnvilProvider, classOf[TEAnvil])
+    provide(AnvilProvider, classOf[TEAnvil], targets = Head)
   }
 
 }
