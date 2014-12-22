@@ -46,6 +46,8 @@ object Providers {
     registrar.registerBodyProvider(FoodPrepProvider, classOf[TEFoodPrep])
     registrar.registerNBTProvider(FoodPrepProvider, classOf[TEFoodPrep])
 
+    FMLLog.info("AnvilProvider")
+    registrar.registerHeadProvider(AnvilProvider, classOf[TEAnvil])
   }
 
 }
