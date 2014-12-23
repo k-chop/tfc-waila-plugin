@@ -11,7 +11,7 @@ import net.minecraft.block.Block
 import net.minecraft.item.ItemStack
 
 
-object AnvilProvider extends ProviderBase[TEAnvil] with Cacheable[(Block, Int), ItemStack] {
+object AnvilProvider extends ProviderBase[TEAnvil] {
 
   override def getWailaHead(stack: ItemStack,
                             tooltip: JList[String],
