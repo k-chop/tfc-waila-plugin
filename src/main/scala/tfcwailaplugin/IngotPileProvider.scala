@@ -22,7 +22,7 @@ object IngotPileProvider extends ProviderBase[TEIngotPile] with EphemeralCache[S
                    tooltip: JList[String],
                    accessor: IWailaDataAccessor,
                    config: IWailaConfigHandler): JList[String] = {
-    if (tooltip.size == 1) {
+    if (!tooltip.isEmpty) {
       tooltip.set(0, tooltip.get(0) + " Pile")
     }
     tooltip
