@@ -15,7 +15,7 @@ object Providers {
   private[this] case object NBT extends Target
 
   private[this] def provide(provider: ProviderBase[_], clazz: Class[_], targets: Target*)(implicit registrar: IWailaRegistrar): Unit = {
-    targets.foreach {
+    targets.distinct.foreach {
       case Stack => registrar.registerStackProvider(provider, clazz)
       case Head => registrar.registerHeadProvider(provider, clazz)
       case Body => registrar.registerBodyProvider(provider, clazz)
