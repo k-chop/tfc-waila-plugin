@@ -34,7 +34,7 @@ object Providers {
 
     provide(WorldItemProvider, classOf[TEWorldItem], targets = Stack)
 
-    provide(BarrelProvider, classOf[TEBarrel], targets = Body)
+    provide(BarrelProvider, classOf[TEBarrel], targets = Head, Body)
 
     provide(OreProvider, classOf[TEOre], targets = Stack)
 

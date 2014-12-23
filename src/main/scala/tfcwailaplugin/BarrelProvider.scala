@@ -12,6 +12,9 @@ import net.minecraft.item.{Item, ItemStack}
 import java.util.{List => JList}
 
 import implicits._
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.World
 
 object BarrelProvider extends ProviderBase[TEBarrel] {
 
@@ -57,6 +60,26 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
       ""
   }).getOrElse("")
 
+  override def getWailaHead(stack: ItemStack,
+                            tooltip: JList[String],
+                            accessor: IWailaDataAccessor,
+                            config: IWailaConfigHandler): JList[String] = {
+    import net.minecraft.util.EnumChatFormatting._
+
+    accessor.getTileEntity match {
+      case e: TEBarrel =>
+        // sealed
+        if (e.getSealed && !tooltip.isEmpty) {
+          val msg = stateString(e)
+          val barrelName = tooltip.get(0)
+          tooltip.set(0, s"$WHITE$barrelName $DARK_AQUA[Sealed${if (msg.nonEmpty) s"/$DARK_GREEN$msg" else ""}$DARK_AQUA]")
+        }
+      case _ =>
+    }
+
+    tooltip
+  }
+
   override def getWailaBody(stack: ItemStack,
                    tooltip: JList[String],
                    accessor: IWailaDataAccessor,
@@ -64,11 +87,6 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
 
     accessor.getTileEntity match {
       case e: TEBarrel =>
-        // sealing
-        if (e.getSealed) {
-          val msg = stateString(e)
-          tooltip.add(s"[Sealed${if (msg.nonEmpty) s" / $msg" else ""}]")
-        }
         // solid container
         val itemCount = e.getInvCount
         if (1 <= itemCount) {
