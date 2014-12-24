@@ -6,14 +6,14 @@ import com.bioxx.tfc.TileEntities.TEIngotPile
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.{Item, ItemStack}
 
-object IngotPileProvider extends ProviderBase[TEIngotPile] with Cacheable[Item, ItemStack] {
+object IngotPileProvider extends ProviderBase[TEIngotPile] with EphemeralCache[Symbol, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
       case ip: TEIngotPile =>
         val is = ip.getStackInSlot(0)
         val item = is.getItem
-        cache.getOrElseUpdate(item, new ItemStack(item, 1, is.getItemDamage))
+        cache.getOrElseUpdate(Symbol(is.getDisplayName), new ItemStack(item, 1, is.getItemDamage))
       case _ => null
     }
   }
@@ -22,7 +22,7 @@ object IngotPileProvider extends ProviderBase[TEIngotPile] with Cacheable[Item, 
                    tooltip: JList[String],
                    accessor: IWailaDataAccessor,
                    config: IWailaConfigHandler): JList[String] = {
-    if (tooltip.size == 1) {
+    if (!tooltip.isEmpty) {
       tooltip.set(0, tooltip.get(0) + " Pile")
     }
     tooltip

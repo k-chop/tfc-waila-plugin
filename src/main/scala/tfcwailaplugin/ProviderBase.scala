@@ -1,6 +1,7 @@
 package tfcwailaplugin
 
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor, IWailaDataProvider}
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 
 import java.util.{List => JList}
@@ -14,7 +15,7 @@ trait ProviderBase[T] extends IWailaDataProvider {
 
   def asTarget(te: TileEntity)(implicit ev: T <:< TileEntity): T = te.asInstanceOf[T]
 
-  def getNBTData(te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
+  def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     if (te != null)
       te.writeToNBT(tag)
     tag

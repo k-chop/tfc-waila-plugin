@@ -5,7 +5,7 @@ import com.bioxx.tfc.TileEntities.TileEntityToolRack
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
-object ToolRackProvider extends ProviderBase[TileEntityToolRack] with Cacheable[Int, ItemStack] {
+object ToolRackProvider extends ProviderBase[TileEntityToolRack] with EphemeralCache[Int, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
