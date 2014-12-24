@@ -4,6 +4,7 @@ import java.util.{List => JList}
 
 import com.bioxx.tfc.TileEntities.TEFoodPrep
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -13,7 +14,7 @@ import implicits.ItemStackAdapter
 
 object FoodPrepProvider extends ProviderBase[TEFoodPrep] {
 
-  override def getNBTData(te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
+  override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     te match {
       case fp: TEFoodPrep =>
         val tagList = NBTUtil.buildTagList(fp, start = 0, end = 5)

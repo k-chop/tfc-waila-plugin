@@ -4,6 +4,7 @@ import java.util.{List => JList}
 
 import com.bioxx.tfc.TileEntities.TELogPile
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
@@ -13,7 +14,7 @@ import implicits.ItemStackAdapter
 
 object LogPileProvider extends ProviderBase[TELogPile] {
 
-  override def getNBTData(te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
+  override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     te match {
       case lp: TELogPile =>
         tag.setTag("Items", NBTUtil.buildTagList(lp, start = 0, end = lp.getSizeInventory))
