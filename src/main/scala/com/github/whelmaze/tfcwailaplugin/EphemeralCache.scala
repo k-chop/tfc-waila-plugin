@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import scala.collection.mutable
 

@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack

@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import cpw.mods.fml.common.Mod.EventHandler
 import cpw.mods.fml.common.event.{FMLInterModComms, FMLInitializationEvent}

@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor, IWailaDataProvider}
 import net.minecraft.entity.player.EntityPlayerMP

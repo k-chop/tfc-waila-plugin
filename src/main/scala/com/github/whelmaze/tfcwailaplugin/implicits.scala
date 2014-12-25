@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import com.bioxx.tfc.Food.ItemFoodTFC
 import com.bioxx.tfc.api.Util.Helper

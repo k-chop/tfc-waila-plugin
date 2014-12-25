@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import com.bioxx.tfc.TFCBlocks
 import com.bioxx.tfc.TileEntities.TileEntityToolRack

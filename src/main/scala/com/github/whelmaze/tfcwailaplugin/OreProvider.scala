@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import com.bioxx.tfc.api.Constant.Global
 import com.bioxx.tfc.{TFCBlocks, TFCItems}

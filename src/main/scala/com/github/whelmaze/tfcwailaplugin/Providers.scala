@@ -1,4 +1,4 @@
-package tfcwailaplugin
+package com.github.whelmaze.tfcwailaplugin
 
 import cpw.mods.fml.common.FMLLog
 import mcp.mobius.waila.api.IWailaRegistrar
