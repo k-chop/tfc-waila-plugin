@@ -26,10 +26,12 @@ object Providers {
 
   def init(implicit registrar: IWailaRegistrar): Unit = {
 
+    // configs
     registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.numberoflog", "Show number of log", false)
     registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.logperslot", "Show log per slot", false)
-    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.nologinfo", "No log pile Information", false)
+    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.nologinfo", "No log pile Info", false)
 
+    // registration providers
     provide(CropProvider, classOf[TECrop], targets = Head, Body)
 
     provide(WorldItemProvider, classOf[TEWorldItem], targets = Stack)
