@@ -9,17 +9,18 @@ import com.bioxx.tfc.TileEntities.TEPottery
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 import net.minecraftforge.common.util.ForgeDirection
+import scala.language.postfixOps
 
 import implicits.ItemFoodTFCAdapter
 import implicits.ItemStackAdapter
 
 object PotteryProvider extends ProviderBase[TEPottery] {
 
-  override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = accessor.getTileEntity match {
-    case e: TEPottery =>
-      val pos = accessor.getPosition
+  override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
+    Option(accessor.getTileEntity) collect {
+      case e: TEPottery if e.straw < 8 && ForgeDirection.getOrientation(accessor.getPosition.sideHit) == ForgeDirection.UP =>
+        val pos = accessor.getPosition
 
-      if (e.straw < 8 && ForgeDirection.getOrientation(pos.sideHit) == ForgeDirection.UP) {
         val v = pos.hitVec
         val hitX = v.xCoord - v.xCoord.floor
         val hitZ = v.zCoord - v.zCoord.floor
@@ -34,8 +35,7 @@ object PotteryProvider extends ProviderBase[TEPottery] {
         else if (hitX > 0.5 && hitZ > 0.5)
           e.getStackInSlot(3)
         else null
-      } else null
-    case _ => null // null null null...
+    } orNull
   }
 
   override def getWailaBody(stack: ItemStack,

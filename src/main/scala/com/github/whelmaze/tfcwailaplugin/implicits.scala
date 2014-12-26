@@ -3,7 +3,7 @@ package com.github.whelmaze.tfcwailaplugin
 import com.bioxx.tfc.Food.ItemFoodTFC
 import com.bioxx.tfc.api.Util.Helper
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.ItemStack
+import net.minecraft.item.{Item, ItemStack}
 
 object implicits {
 
@@ -39,8 +39,8 @@ object implicits {
 
     @inline def toInfoString: String = is.getItem match {
       case i: ItemFoodTFC => i.toSimpleInfoString(is)
-      case i if i == null => s"$WHITE*** ${GOLD}ItemStack is null! $WHITE***"
-      case i => s"${is.getDisplayName} x${is.stackSize}"
+      case i: Item => s"${is.getDisplayName} x${is.stackSize}"
+      case _ => s"$WHITE*** ${GOLD}Invalid ItemStack $WHITE***"
     }
   }
 
