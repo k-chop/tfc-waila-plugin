@@ -9,7 +9,7 @@ object ModTFCWailaPlugin {
 
   @EventHandler
   def init(event: FMLInitializationEvent): Unit = {
-    FMLInterModComms.sendMessage("Waila", "register", "tfcwailaplugin.Providers.init")
+    FMLInterModComms.sendMessage("Waila", "register", "com.github.whelmaze.tfcwailaplugin.Providers.init")
   }
 
 }
