@@ -51,10 +51,11 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
                    config: IWailaConfigHandler): JList[String] = {
     import net.minecraft.util.EnumChatFormatting._
     import net.minecraft.util.StatCollector.translateToLocal
+    import implicits.JavaEnumOrdering._
 
     // https://github.com/Deadrik/TFCraft/commit/055d3559bbfc257b0b4f6e0e8384631be661bf11
     val rank = TFC_Core.getSkillStats(accessor.getPlayer).getSkillRank(Global.SKILL_AGRICULTURE)
-    if (rank == SkillRank.Expert || rank == SkillRank.Master) {
+    if (SkillRank.Expert <= rank) {
       val nuType = accessor.getTileEntity match {
         case tec: TECrop =>
           CropManager.getInstance.getCropFromId(tec.cropId).getCycleType match {
