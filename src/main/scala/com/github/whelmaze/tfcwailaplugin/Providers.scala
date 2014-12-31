@@ -51,6 +51,9 @@ object Providers {
     provide(FoodPrepProvider, classOf[TEFoodPrep], targets = Body, NBT)
 
     provide(AnvilProvider, classOf[TEAnvil], targets = Head)
+
+    provide(SmokeRackProvider, classOf[TESmokeRack], targets = Stack, Head, Body)
+
   }
 
 }
