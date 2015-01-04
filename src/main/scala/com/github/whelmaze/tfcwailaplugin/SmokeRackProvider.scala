@@ -37,7 +37,7 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     }
   }
 
-  private[this] final val dl = Array((0,-1,0),(1,-1,0),(-1,-1,0),(0,-1,1),(0,-1,-1),(0,-2,0),(1,-2,0),(-1,-2,0),(0,-2,1),(0,-2,-1))
+  private[this] final val dl = Seq((0,-1,0),(1,-1,0),(-1,-1,0),(0,-1,1),(0,-1,-1),(0,-2,0),(1,-2,0),(-1,-2,0),(0,-2,1),(0,-2,-1))
 
   private[this] def isSmoking(rack: TESmokeRack)(accessor: IWailaDataAccessor): Boolean = {
     def findFirepit(pos: MovingObjectPosition) = dl find { case (xx,yy,zz) => sfp(pos.blockX + xx, pos.blockY + yy, pos.blockZ + zz) }
