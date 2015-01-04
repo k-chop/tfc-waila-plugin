@@ -86,12 +86,12 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     val iso = getTargetStack(accessor)
     iso foreach { is =>
       tooltip add is.toInfoString
-      val rack = asTarget(accessor.getTileEntity)
+      /*val rack = asTarget(accessor.getTileEntity)
       if (isSmoking(rack)(accessor)) {
         tooltip add s"${DARK_GRAY}Smoking"
       } else if (isDrying(is)) {
         tooltip add s"${DARK_GRAY}Drying"
-      }
+      }*/
     }
     tooltip
   }
