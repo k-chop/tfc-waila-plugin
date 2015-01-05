@@ -58,4 +58,8 @@ object implicits {
     }
   }
 
+  implicit object JavaEnumOrdering extends Ordering[Enum[_]] {
+    def compare(x: Enum[_], y: Enum[_]) = x.ordinal compare y.ordinal
+  }
+
 }

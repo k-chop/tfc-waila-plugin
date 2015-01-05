@@ -7,12 +7,24 @@ import com.bioxx.tfc.TileEntities._
 
 object Providers {
 
+  val modName = "TFCWailaPlugin"
+  val keyNamePrefix = "tfcwailaplugin"
+
   private[this] sealed trait Target
   private[this] case object Stack extends Target
   private[this] case object Head extends Target
   private[this] case object Body extends Target
   private[this] case object Tail extends Target
   private[this] case object NBT extends Target
+
+  private[this] def configure(registrar: IWailaRegistrar) = {
+    def add(keyName: String, description: String, default: Boolean) = registrar.addConfig(modName, s"$keyNamePrefix.$keyName", description, default)
+
+    // configs
+    add("numberoflog", "Show number of log", default = false)
+    add("logperslot", "Show log per slot", default = false)
+    add("nologinfo", "No log pile Info", default = false)
+  }
 
   private[this] def provide(provider: ProviderBase[_], clazz: Class[_], targets: Target*)(implicit registrar: IWailaRegistrar): Unit = {
     targets.distinct.foreach {
@@ -26,10 +38,7 @@ object Providers {
 
   def init(implicit registrar: IWailaRegistrar): Unit = {
 
-    // configs
-    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.numberoflog", "Show number of log", false)
-    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.logperslot", "Show log per slot", false)
-    registrar.addConfig("TFCWailaPlugin", "tfcwailaplugin.nologinfo", "No log pile Info", false)
+    configure(registrar)
 
     // registration providers
     provide(CropProvider, classOf[TECrop], targets = Head, Body)
@@ -51,6 +60,9 @@ object Providers {
     provide(FoodPrepProvider, classOf[TEFoodPrep], targets = Body, NBT)
 
     provide(AnvilProvider, classOf[TEAnvil], targets = Head)
+
+    provide(SmokeRackProvider, classOf[TESmokeRack], targets = Stack, Head, Body)
+
   }
 
 }
