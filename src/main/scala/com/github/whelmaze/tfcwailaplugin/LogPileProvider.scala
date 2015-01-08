@@ -27,18 +27,19 @@ object LogPileProvider extends ProviderBase[TELogPile] {
                             tooltip: JList[String],
                             accessor: IWailaDataAccessor,
                             config: IWailaConfigHandler): JList[String] = {
+    implicit val implicitlyProvideToConfigs = config
 
     accessor.getTileEntity match {
-      case lp: TELogPile if !config.getConfig("tfcwailaplugin.nologinfo") =>
+      case lp: TELogPile if Configs.noLogInfo.isDisabled =>
         val tags = accessor.getNBTData
         val items = NBTUtil.readItemStacks(tags)
 
         // show number of logs
-        if (config.getConfig("tfcwailaplugin.numberoflog")) {
+        if (Configs.numberOfLog.isEnabled) {
           tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs")
         }
         // show logs each slot
-        if (config.getConfig("tfcwailaplugin.logperslot")) {
+        if (Configs.logPerSlot.isEnabled) {
           items.foreach { is =>
             tooltip.add(is.toInfoString)
           }
