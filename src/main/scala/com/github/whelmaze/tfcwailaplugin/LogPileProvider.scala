@@ -35,14 +35,8 @@ object LogPileProvider extends ProviderBase[TELogPile] {
         val items = NBTUtil.readItemStacks(tags)
 
         // show number of logs
-        if (Configs.numberOfLog.isEnabled) {
+        if (Configs.numberOfLogOnly.isEnabled) {
           tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs")
-        }
-        // show logs each slot
-        if (Configs.logPerSlot.isEnabled) {
-          items.foreach { is =>
-            tooltip.add(is.toInfoString)
-          }
         } else {
           // show logs grouped by woodType
           items.groupBy(_.getItemDamage).foreach { case (_, is) =>

@@ -13,8 +13,7 @@ object Configs {
   val keyNamePrefix = "tfcwailaplugin"
 
   // define configs
-  val numberOfLog = Config("numberoflog", "Show number of log", default = false)
-  val logPerSlot = Config("logperslot", "Show log per slot", default = false)
+  val numberOfLogOnly = Config("numberoflog", "Show number of log only", default = false)
   val noLogInfo = Config("nologinfo", "No log pile Info", default = false)
 
   // register configs
@@ -25,7 +24,7 @@ object Configs {
 
     register (
       // TELogPile
-      numberOfLog, logPerSlot, noLogInfo
+      numberOfLogOnly, noLogInfo
     )
   }
 
