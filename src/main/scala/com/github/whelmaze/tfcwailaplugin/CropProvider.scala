@@ -21,19 +21,17 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
 
     accessor.getTileEntity match {
       case tec: TECrop =>
+        def updateF(ci: CropIndex, p: Boolean = false) = {
+          val newIs = new ItemStack(if (p) ci.Output2 else ci.Output1)
+          ItemFoodTFC.createTag(newIs)
+          newIs.getDisplayName
+        }
+
         val str = CropManager.getInstance.getCropFromId(tec.cropId) match {
           case pepper: CropIndexPepper if pepper.Output2 != null =>
-            cache.getOrElseUpdate(tec.cropId,{
-              val newIs = new ItemStack(pepper.Output2, 1)
-              ItemFoodTFC.createTag(newIs, 1.0f)
-              newIs.getDisplayName
-            })
+            cache.getOrElseUpdate(tec.cropId, updateF(pepper, p = true))
           case others: CropIndex if others.Output1 != null =>
-            cache.getOrElseUpdate(tec.cropId, {
-              val newIs = new ItemStack(others.Output1, 1)
-              ItemFoodTFC.createTag(newIs, 1.0f)
-              newIs.getDisplayName
-            })
+            cache.getOrElseUpdate(tec.cropId, updateF(others))
           case _ =>
             "Unknown"
         }
