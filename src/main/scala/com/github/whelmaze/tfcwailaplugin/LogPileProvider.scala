@@ -39,9 +39,9 @@ object LogPileProvider extends ProviderBase[TELogPile] {
           tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs")
         } else {
           // show logs grouped by woodType
-          items.groupBy(_.getItemDamage).foreach { case (_, is) =>
-            val stackSizeSum = is.foldLeft(0)(_ + _.stackSize)
-            tooltip.add(s"${is.head.getDisplayName} x$stackSizeSum")
+          items.groupBy(_.getItemDamage).foreach { case (_, iss) =>
+            val stackSizeSum = iss.foldLeft(0)(_ + _.stackSize)
+            tooltip.add(s"${iss.head.getDisplayName} x$stackSizeSum")
           }
         }
       case _ =>
