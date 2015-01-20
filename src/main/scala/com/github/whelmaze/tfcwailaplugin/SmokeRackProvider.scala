@@ -6,7 +6,7 @@ import com.bioxx.tfc.TileEntities.{TEFirepit, TESmokeRack}
 import com.bioxx.tfc.api.Food
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
-import net.minecraft.util.{MovingObjectPosition, StatCollector}
+import net.minecraft.util.MovingObjectPosition
 
 import scala.language.postfixOps
 
@@ -68,7 +68,7 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     import net.minecraft.util.EnumChatFormatting._
 
     if (!tooltip.isEmpty)
-      tooltip.set(0, s"$WHITE${StatCollector.translateToLocal("tile.SmokeRack.name")}")
+      tooltip.set(0, s"$WHITE${util.translate("tile.SmokeRack.name")}")
     tooltip
   }
 

@@ -35,7 +35,6 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
     is <- Option(b.getStackInSlot(0))
     fs <- Option(b.getFluidStack) if b.getSealed
   } yield {
-    import net.minecraft.util.StatCollector.translateToLocal
     // https://github.com/Deadrik/TFCraft/blob/708511cdbb25d0b2c356eacc129334f8e81243a3/src/Common/com/bioxx/tfc/GUI/GuiBarrel.java#L315-343
 
     def isBrining =
@@ -52,11 +51,11 @@ object BarrelProvider extends ProviderBase[TEBarrel] {
         Option(b.recipe).isEmpty
 
     if (isBrining)
-      s"${translateToLocal("gui.barrel.brining")}"
+      s"${util.translate("gui.barrel.brining")}"
     else if (isPickling)
-      s"${translateToLocal("gui.barrel.pickling")}"
+      s"${util.translate("gui.barrel.pickling")}"
     else if (isPreserving)
-      s"${translateToLocal("gui.barrel.preserving")}"
+      s"${util.translate("gui.barrel.preserving")}"
     else
       ""
   }).getOrElse("")

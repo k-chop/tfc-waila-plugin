@@ -48,7 +48,6 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
                    accessor: IWailaDataAccessor,
                    config: IWailaConfigHandler): JList[String] = {
     import net.minecraft.util.EnumChatFormatting._
-    import net.minecraft.util.StatCollector.translateToLocal
     import implicits.JavaEnumOrdering._
 
     // https://github.com/Deadrik/TFCraft/commit/055d3559bbfc257b0b4f6e0e8384631be661bf11
@@ -57,9 +56,9 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
       val nuType = accessor.getTileEntity match {
         case tec: TECrop =>
           CropManager.getInstance.getCropFromId(tec.cropId).getCycleType match {
-            case 0 => s"$RED${translateToLocal("gui.Nutrient.A")}"
-            case 1 => s"$GOLD${translateToLocal("gui.Nutrient.B")}"
-            case 2 => s"$YELLOW${translateToLocal("gui.Nutrient.C")}"
+            case 0 => s"$RED${util.translate("gui.Nutrient.A")}"
+            case 1 => s"$GOLD${util.translate("gui.Nutrient.B")}"
+            case 2 => s"$YELLOW${util.translate("gui.Nutrient.C")}"
             case _ => ""
           }
         case _ => ""

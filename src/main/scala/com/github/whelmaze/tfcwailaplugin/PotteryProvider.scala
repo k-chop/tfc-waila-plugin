@@ -43,7 +43,6 @@ object PotteryProvider extends ProviderBase[TEPottery] {
                             accessor: IWailaDataAccessor,
     config: IWailaConfigHandler): JList[String] = {
     import net.minecraft.util.EnumChatFormatting._
-    import net.minecraft.util.StatCollector.translateToLocal
 
     if (stack != null) {
       val tag = stack.stackTagCompound
@@ -61,17 +60,17 @@ object PotteryProvider extends ProviderBase[TEPottery] {
           // https://github.com/Deadrik/TFCraft/blob/41eaf222c0310cef84a6fd5d9334e8d11a15263a/src/Common/com/bioxx/tfc/Items/Pottery/ItemPotterySmallVessel.java#L282
           if (tag.hasKey("MetalType") && tag.hasKey("MetalAmount")) {
             val s = tag.getString("MetalType")
-            val a = s"$DARK_GREEN${translateToLocal("gui.metal." + s.replace(" ", ""))}"
-            val b = s"(${tag.getInteger("MetalAmount")} Unit)"
+            val a = s"$DARK_GREEN${util.translate("gui.metal." + s.replace(" ", ""))}"
+            val b = s"(${tag.getInteger("MetalAmount")} ${util.translated.units})"
             tooltip.add(a + b)
           }
           if (tag.hasKey("TempTimer")) {
             val total = TFC_Time.getTotalHours
             val temp = tag.getLong("TempTimer")
             if (total - temp < 11)
-              tooltip.add(s"$WHITE${translateToLocal("gui.ItemHeat.Liquid")}")
+              tooltip.add(s"$WHITE${util.translate("gui.ItemHeat.Liquid")}")
             else
-              tooltip.add(s"$WHITE${translateToLocal("gui.ItemHeat.Solidified")}")
+              tooltip.add(s"$WHITE${util.translate("gui.ItemHeat.Solidified")}")
           }
         case _ =>
       }
