@@ -48,6 +48,8 @@ object Providers {
 
     provide(SmokeRackProvider, classOf[TESmokeRack], targets = Stack, Head, Body)
 
+    provide(CrucibleProvider, classOf[TECrucible], targets = Body)
+
   }
 
 }
