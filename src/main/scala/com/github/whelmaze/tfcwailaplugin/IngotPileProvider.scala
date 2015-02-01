@@ -6,14 +6,14 @@ import com.bioxx.tfc.TileEntities.TEIngotPile
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.{Item, ItemStack}
 
-object IngotPileProvider extends ProviderBase[TEIngotPile] with EphemeralCache[Symbol, ItemStack] {
+object IngotPileProvider extends ProviderBase[TEIngotPile] with EphemeralCache[ItemStack, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
       case ip: TEIngotPile =>
         val is = ip.getStackInSlot(0)
         val item = is.getItem
-        cache.getOrElseUpdate(Symbol(is.getDisplayName), new ItemStack(item, 1, is.getItemDamage))
+        cache.getOrElseUpdate(is, new ItemStack(item, 1, is.getItemDamage))
       case _ => null
     }
   }
@@ -22,8 +22,16 @@ object IngotPileProvider extends ProviderBase[TEIngotPile] with EphemeralCache[S
                    tooltip: JList[String],
                    accessor: IWailaDataAccessor,
                    config: IWailaConfigHandler): JList[String] = {
-    if (!tooltip.isEmpty) {
-      tooltip.set(0, tooltip.get(0) + " Pile")
+    import net.minecraft.util.EnumChatFormatting._
+
+    Option(stack) foreach { is =>
+      val n = is.getItem.getUnlocalizedName
+      val metalRawName = n.replace("item.","").split(" Ingot").headOption.getOrElse("Unknown").replace(" ","")
+      val metalStr = util.translate(s"gui.metal.$metalRawName")
+      val pileStr = util.translate("tile.ingotpile.name")
+      if (!tooltip.isEmpty) {
+        tooltip.set(0, s"$WHITE$metalStr $pileStr")
+      }
     }
     tooltip
   }

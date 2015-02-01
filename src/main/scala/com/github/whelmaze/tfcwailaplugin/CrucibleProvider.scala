@@ -23,7 +23,7 @@ object CrucibleProvider extends ProviderBase[TECrucible] {
             // Output
             val as = alloy.outputType.Name
             val aa = math.round(alloy.outputAmount)
-            tooltip add s"Output: $WHITE$UNDERLINE$as$RESET ($aa ${util.translated.units})"
+            tooltip add s"${util.translated.output}: $WHITE$UNDERLINE$as$RESET ($aa ${util.translated.units})"
             // MoltenAlloys
             alloy.AlloyIngred.foreach { m =>
               val ms = m.metalType.localizedName

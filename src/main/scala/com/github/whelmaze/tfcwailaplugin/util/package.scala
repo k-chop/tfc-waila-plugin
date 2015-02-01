@@ -7,6 +7,7 @@ package object util {
 
   object translated {
     def units = t("gui.units")
+    def output = t("gui.Output")
   }
 
   // alias to StatCollector.translateToLocal
