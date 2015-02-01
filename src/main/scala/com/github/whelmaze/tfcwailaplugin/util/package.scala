@@ -6,7 +6,7 @@ package object util {
   type Coord = (Int, Int, Int)
 
   object translated {
-    val units = t("gui.units")
+    def units = t("gui.units")
   }
 
   // alias to StatCollector.translateToLocal
