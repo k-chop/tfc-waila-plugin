@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.common.util.ForgeDirection
 import scala.language.postfixOps
 
-import implicits.ItemFoodTFCAdapter
-import implicits.ItemStackAdapter
+import implicits.RichItemFoodTFC
+import implicits.RichItemStack
 
 object PotteryProvider extends ProviderBase[TEPottery] {
 

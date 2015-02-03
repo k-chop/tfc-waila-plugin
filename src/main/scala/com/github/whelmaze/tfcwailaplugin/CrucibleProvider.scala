@@ -13,7 +13,7 @@ import scala.collection.JavaConversions._
 object CrucibleProvider extends ProviderBase[TECrucible] {
 
   override def getWailaBody(stack: ItemStack, tooltip: JList[String], accessor: IWailaDataAccessor, config: IWailaConfigHandler): JList[String] = {
-    import implicits.MetalAdapter
+    import implicits.RichMetal
     import net.minecraft.util.EnumChatFormatting._
 
     accessor.getTileEntity match {

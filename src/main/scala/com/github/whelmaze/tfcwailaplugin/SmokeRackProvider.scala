@@ -10,7 +10,7 @@ import net.minecraft.util.MovingObjectPosition
 
 import scala.language.postfixOps
 
-import implicits.ItemStackAdapter
+import implicits.RichItemStack
 import util.Coord
 
 object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[Coord, Option[Coord]] {

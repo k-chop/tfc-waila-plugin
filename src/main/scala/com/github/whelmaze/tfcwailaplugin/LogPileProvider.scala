@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
-import implicits.ItemStackAdapter
+import implicits.RichItemStack
 
 object LogPileProvider extends ProviderBase[TELogPile] {
 

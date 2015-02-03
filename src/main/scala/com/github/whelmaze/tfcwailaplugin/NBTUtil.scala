@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
 import net.minecraftforge.common.util.Constants.NBT
 
-import implicits.IInventoryAdapter
+import implicits.RichIInventory
 
 object NBTUtil {
 
