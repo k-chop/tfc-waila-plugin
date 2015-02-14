@@ -27,7 +27,7 @@ object Providers {
 
     FoodPrepProvider.register(targets = Body, NBT)
 
-    SmokeRackProvider.register(targets = Stack, Head, Body)
+    SmokeRackProvider.register(targets = Stack, Head, Body, NBT)
 
     CrucibleProvider.register(targets = Body)
 
