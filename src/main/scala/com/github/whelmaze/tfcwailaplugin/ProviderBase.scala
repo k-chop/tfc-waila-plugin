@@ -10,8 +10,11 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
+import scala.reflect.ClassTag
 
-trait ProviderBase[T] extends IWailaDataProvider {
+abstract class ProviderBase[T: ClassTag] extends IWailaDataProvider {
+
+  def targetClass: Class[T] = implicitly[ClassTag[T]].runtimeClass.asInstanceOf[Class[T]]
 
   def asTarget(te: TileEntity)(implicit ev: T <:< TileEntity): T = te.asInstanceOf[T]
 

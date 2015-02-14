@@ -13,13 +13,13 @@ object Providers {
   private[this] case object Tail extends Target
   private[this] case object NBT extends Target
 
-  private[this] def provide(provider: ProviderBase[_], clazz: Class[_], targets: Target*)(implicit registrar: IWailaRegistrar): Unit = {
+  private[this] def provide[T](provider: ProviderBase[T], targets: Target*)(implicit registrar: IWailaRegistrar): Unit = {
     targets.distinct.foreach {
-      case Stack => registrar.registerStackProvider(provider, clazz)
-      case Head => registrar.registerHeadProvider(provider, clazz)
-      case Body => registrar.registerBodyProvider(provider, clazz)
-      case Tail => registrar.registerTailProvider(provider, clazz)
-      case NBT => registrar.registerNBTProvider(provider, clazz)
+      case Stack => registrar.registerStackProvider(provider, provider.targetClass)
+      case Head => registrar.registerHeadProvider(provider, provider.targetClass)
+      case Body => registrar.registerBodyProvider(provider, provider.targetClass)
+      case Tail => registrar.registerTailProvider(provider, provider.targetClass)
+      case NBT => registrar.registerNBTProvider(provider, provider.targetClass)
     }
   }
 
@@ -28,27 +28,27 @@ object Providers {
     Configs.registerAll(registrar)
 
     // registration providers
-    provide(CropProvider, classOf[TECrop], targets = Head, Body)
+    provide(CropProvider, targets = Head, Body)
 
-    provide(WorldItemProvider, classOf[TEWorldItem], targets = Stack)
+    provide(WorldItemProvider, targets = Stack)
 
-    provide(BarrelProvider, classOf[TEBarrel], targets = Head, Body)
+    provide(BarrelProvider, targets = Head, Body)
 
-    provide(OreProvider, classOf[TEOre], targets = Stack)
+    provide(OreProvider, targets = Stack)
 
-    provide(PotteryProvider, classOf[TEPottery], targets = Stack, Body)
+    provide(PotteryProvider, targets = Stack, Body)
 
-    provide(ToolRackProvider, classOf[TileEntityToolRack], targets = Stack)
+    provide(ToolRackProvider, targets = Stack)
 
-    provide(LogPileProvider, classOf[TELogPile], targets = Body, NBT)
+    provide(LogPileProvider, targets = Body, NBT)
 
-    provide(IngotPileProvider, classOf[TEIngotPile], targets = Stack, Head, Body)
+    provide(IngotPileProvider, targets = Stack, Head, Body)
 
-    provide(FoodPrepProvider, classOf[TEFoodPrep], targets = Body, NBT)
+    provide(FoodPrepProvider, targets = Body, NBT)
 
-    provide(SmokeRackProvider, classOf[TESmokeRack], targets = Stack, Head, Body)
+    provide(SmokeRackProvider, targets = Stack, Head, Body)
 
-    provide(CrucibleProvider, classOf[TECrucible], targets = Body)
+    provide(CrucibleProvider, targets = Body)
 
   }
 
