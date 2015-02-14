@@ -8,7 +8,7 @@ object Providers {
 
     Configs.registerAll(registrar)
 
-    // registration providers
+    // registration TileEntity providers
     CropProvider.register(targets = Head, Body)
 
     WorldItemProvider.register(targets = Stack)
@@ -31,6 +31,9 @@ object Providers {
 
     CrucibleProvider.register(targets = Body)
 
+    // registration Entity providers
+    IAnimalProvider.register(targets = NBT, Body)
+
   }
 
   // TE = TileEntity
@@ -44,7 +47,7 @@ object Providers {
   private[this] case object NBT extends TargetTE with TargetE
   private[this] case object OverrideEntity extends TargetE
 
-  private[this] final implicit class TE[T](provider: TileEntityProviderBase[T]) extends AnyVal {
+  private[this] final implicit class TE[T](val provider: TileEntityProviderBase[T]) extends AnyVal {
     def register(targets: TargetTE*)(implicit registrar: IWailaRegistrar): Unit = {
       targets.distinct.foreach {
         case Stack => registrar.registerStackProvider(provider, provider.targetClass)
@@ -57,7 +60,7 @@ object Providers {
     }
   }
 
-  private[this] final implicit class E[T](provider: EntityProviderBase[T]) extends AnyVal {
+  private[this] final implicit class E[T](val provider: EntityProviderBase[T]) extends AnyVal {
     def register(targets: TargetE*)(implicit registrar: IWailaRegistrar): Unit = {
       targets.distinct.foreach {
         case OverrideEntity => registrar.registerOverrideEntityProvider(provider, provider.targetClass)
