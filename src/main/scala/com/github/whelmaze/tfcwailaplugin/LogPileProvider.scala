@@ -12,7 +12,7 @@ import net.minecraft.world.World
 
 import implicits.RichItemStack
 
-object LogPileProvider extends ProviderBase[TELogPile] {
+object LogPileProvider extends TileEntityProviderBase[TELogPile] {
 
   override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     te match {

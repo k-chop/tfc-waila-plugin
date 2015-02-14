@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack
 import scala.collection.JavaConversions._
 
 
-object CrucibleProvider extends ProviderBase[TECrucible] {
+object CrucibleProvider extends TileEntityProviderBase[TECrucible] {
 
   override def getWailaBody(stack: ItemStack, tooltip: JList[String], accessor: IWailaDataAccessor, config: IWailaConfigHandler): JList[String] = {
     import implicits.RichMetal

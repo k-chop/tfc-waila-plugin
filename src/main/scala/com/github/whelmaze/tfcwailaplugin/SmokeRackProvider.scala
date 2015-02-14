@@ -13,7 +13,7 @@ import scala.language.postfixOps
 import implicits.RichItemStack
 import util.Coord
 
-object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[Coord, Option[Coord]] {
+object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] with EphemeralCache[Coord, Option[Coord]] {
 
   private[this] def assignSlotFromPosition(accessor: IWailaDataAccessor): Int = {
     // https://github.com/Deadrik/TFCraft/blob/d63ac3ae957cbc5664bb2bbd19e92d2712a12644/src/Common/com/bioxx/tfc/Blocks/BlockSmokeRack.java#L69

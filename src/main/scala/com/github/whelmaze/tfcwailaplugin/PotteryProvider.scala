@@ -14,7 +14,7 @@ import scala.language.postfixOps
 import implicits.RichItemFoodTFC
 import implicits.RichItemStack
 
-object PotteryProvider extends ProviderBase[TEPottery] {
+object PotteryProvider extends TileEntityProviderBase[TEPottery] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     Option(accessor.getTileEntity) collect {

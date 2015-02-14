@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
-object BarrelProvider extends ProviderBase[TEBarrel] {
+object BarrelProvider extends TileEntityProviderBase[TEBarrel] {
 
   private[this] def canBriningAndPickling(item: Item): Boolean = {
     import com.bioxx.tfc.api.Enums.EnumFoodGroup._

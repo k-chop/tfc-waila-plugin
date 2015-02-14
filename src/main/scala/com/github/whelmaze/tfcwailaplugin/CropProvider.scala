@@ -11,7 +11,7 @@ import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
 
-object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String] {
+object CropProvider extends TileEntityProviderBase[TECrop] with EphemeralCache[Int, String] {
 
   override def getWailaHead(stack: ItemStack,
                    tooltip: JList[String],
