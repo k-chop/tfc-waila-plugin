@@ -10,9 +10,9 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
-import implicits.ItemStackAdapter
+import implicits.RichItemStack
 
-object LogPileProvider extends ProviderBase[TELogPile] {
+object LogPileProvider extends TileEntityProviderBase[TELogPile] {
 
   override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     te match {
@@ -27,26 +27,21 @@ object LogPileProvider extends ProviderBase[TELogPile] {
                             tooltip: JList[String],
                             accessor: IWailaDataAccessor,
                             config: IWailaConfigHandler): JList[String] = {
+    implicit val implicitlyProvideToConfigs = config
 
     accessor.getTileEntity match {
-      case lp: TELogPile if !config.getConfig("tfcwailaplugin.nologinfo") =>
+      case lp: TELogPile if Configs.noLogInfo.isDisabled =>
         val tags = accessor.getNBTData
         val items = NBTUtil.readItemStacks(tags)
 
         // show number of logs
-        if (config.getConfig("tfcwailaplugin.numberoflog")) {
+        if (Configs.numberOfLogOnly.isEnabled) {
           tooltip.add(s"in ${items.foldLeft(0)(_ + _.stackSize)} logs")
-        }
-        // show logs each slot
-        if (config.getConfig("tfcwailaplugin.logperslot")) {
-          items.foreach { is =>
-            tooltip.add(is.toInfoString)
-          }
         } else {
           // show logs grouped by woodType
-          items.groupBy(_.getItemDamage).foreach { case (_, is) =>
-            val stackSizeSum = is.foldLeft(0)(_ + _.stackSize)
-            tooltip.add(s"${is.head.getDisplayName} x$stackSizeSum")
+          items.groupBy(_.getItemDamage).foreach { case (_, iss) =>
+            val stackSizeSum = iss.foldLeft(0)(_ + _.stackSize)
+            tooltip.add(s"${iss.head.getDisplayName} x$stackSizeSum")
           }
         }
       case _ =>

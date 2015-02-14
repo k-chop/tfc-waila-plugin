@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
 import net.minecraftforge.common.util.Constants.NBT
 
-import implicits.IInventoryAdapter
+import implicits.RichIInventory
 
 object NBTUtil {
 
@@ -25,6 +25,17 @@ object NBTUtil {
   @inline final def readItemStacks(nbt: NBTTagCompound, tagListName: String = "Items"): Seq[ItemStack] = {
     val tag = nbt.getTagList(tagListName, NBT.TAG_COMPOUND)
     (0 until tag.tagCount) map { i =>
+      val tagC = tag.getCompoundTagAt(i)
+      ItemStack.loadItemStackFromNBT(tagC)
+    }
+  }
+
+  @inline final def readItemStacksInSlot(nbt: NBTTagCompound, tagListName: String = "Items", slot: Byte): Option[ItemStack] = {
+    val tag = nbt.getTagList(tagListName, NBT.TAG_COMPOUND)
+    (0 until tag.tagCount) find { i =>
+      val tagC = tag.getCompoundTagAt(i)
+      tagC.getByte("Slot") == slot
+    } map { i =>
       val tagC = tag.getCompoundTagAt(i)
       ItemStack.loadItemStackFromNBT(tagC)
     }

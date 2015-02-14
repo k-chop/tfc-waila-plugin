@@ -5,15 +5,28 @@ import java.util.{List => JList}
 import com.bioxx.tfc.TileEntities.{TEFirepit, TESmokeRack}
 import com.bioxx.tfc.api.Food
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
-import net.minecraft.util.{MovingObjectPosition, StatCollector}
+import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.MovingObjectPosition
+import net.minecraft.world.World
 
 import scala.language.postfixOps
 
-import implicits.ItemStackAdapter
+import implicits.RichItemStack
 import util.Coord
 
-object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[Coord, Option[Coord]] {
+object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
+
+  override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
+    te match {
+      case sr: TESmokeRack =>
+        tag.setTag("Items", NBTUtil.buildTagList(sr, start = 0, end = sr.getSizeInventory))
+      case _ =>
+    }
+    tag
+  }
 
   private[this] def assignSlotFromPosition(accessor: IWailaDataAccessor): Int = {
     // https://github.com/Deadrik/TFCraft/blob/d63ac3ae957cbc5664bb2bbd19e92d2712a12644/src/Common/com/bioxx/tfc/Blocks/BlockSmokeRack.java#L69
@@ -32,7 +45,7 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     accessor.getTileEntity match {
       case rack: TESmokeRack =>
         val slot = assignSlotFromPosition(accessor)
-        Option(rack.getStackInSlot(slot))
+        NBTUtil.readItemStacksInSlot(accessor.getNBTData, slot = slot.toByte)
       case _ => None
     }
   }
@@ -44,13 +57,11 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     def sfp(x: Int, y: Int, z: Int): Boolean = accessor.getWorld.getTileEntity(x, y, z).isInstanceOf[TEFirepit]
 
     val pos = accessor.getPosition
-    val c = (pos.blockX, pos.blockY, pos.blockZ)
-    val pit: Option[Coord] = cache.getOrElseUpdate(c, findFirepit(pos))
+    val pit: Option[Coord] = findFirepit(pos)
     val light = pit exists { case (x, y, z) =>
       accessor.getWorld.getTileEntity(pos.blockX + x, pos.blockY + y, pos.blockZ + z) match {
-        // meta = 1(firepit has fuel and burning) or meta = 2(firepit has no fuel but still burning)
-        // judging from fuelLeft and fireTemp need to sync NBT
-        case p: TEFirepit => p.getBlockMetadata == 1// || p.getBlockMetadata == 2
+        // meta = 2(firepit has fuel and burning), meta = 1(firepit has no fuel but still burning)
+        case p: TEFirepit => p.getBlockMetadata == 2
         case _ => false
       }
     }
@@ -68,7 +79,7 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     import net.minecraft.util.EnumChatFormatting._
 
     if (!tooltip.isEmpty)
-      tooltip.set(0, s"$WHITE${StatCollector.translateToLocal("tile.SmokeRack.name")}")
+      tooltip.set(0, s"$WHITE${util.translate("tile.SmokeRack.name")}")
     tooltip
   }
 
@@ -86,12 +97,13 @@ object SmokeRackProvider extends ProviderBase[TESmokeRack] with EphemeralCache[C
     val iso = getTargetStack(accessor)
     iso foreach { is =>
       tooltip add is.toInfoString
-      /*val rack = asTarget(accessor.getTileEntity)
-      if (isSmoking(rack)(accessor)) {
-        tooltip add s"${DARK_GRAY}Smoking"
-      } else if (isDrying(is)) {
-        tooltip add s"${DARK_GRAY}Drying"
-      }*/
+      //tooltip add s"smokeCounter: ${Food.getSmokeCounter(is)}"
+      val rack = asTarget(accessor.getTileEntity)
+      if (!Food.isSmoked(is) && isSmoking(rack)(accessor) && Food.getSmokeCounter(is) < 12) {
+        tooltip add s"${DARK_GRAY}Smoking..."
+      } else if (!Food.isDried(is) && isDrying(is)) {
+        tooltip add s"${DARK_GRAY}Drying..."
+      }
     }
     tooltip
   }

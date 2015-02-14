@@ -1,6 +1,7 @@
 package com.github.whelmaze.tfcwailaplugin
 
-import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor, IWailaDataProvider}
+import mcp.mobius.waila.api._
+import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
 
@@ -10,10 +11,17 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
+import scala.reflect.ClassTag
 
-trait ProviderBase[T] extends IWailaDataProvider {
+abstract class ProviderBase[A: ClassTag, B] {
 
-  def asTarget(te: TileEntity)(implicit ev: T <:< TileEntity): T = te.asInstanceOf[T]
+  def targetClass: Class[A] = implicitly[ClassTag[A]].runtimeClass.asInstanceOf[Class[A]]
+
+  def asTarget(target: B)(implicit ev: A <:< B): A = target.asInstanceOf[A]
+
+}
+
+abstract class TileEntityProviderBase[T: ClassTag] extends ProviderBase[T, TileEntity] with IWailaDataProvider {
 
   def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     if (te != null)
@@ -23,18 +31,27 @@ trait ProviderBase[T] extends IWailaDataProvider {
 
   def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = null
 
-  def getWailaHead(stack: ItemStack,
-                            tooltip: JList[String],
-                            accessor: IWailaDataAccessor,
-                            config: IWailaConfigHandler): JList[String] = tooltip
+  def getWailaHead(stack: ItemStack, tooltip: JList[String], accessor: IWailaDataAccessor, config: IWailaConfigHandler): JList[String] = tooltip
 
-  def getWailaBody(stack: ItemStack,
-                            tooltip: JList[String],
-                            accessor: IWailaDataAccessor,
-                            config: IWailaConfigHandler): JList[String] = tooltip
+  def getWailaBody(stack: ItemStack, tooltip: JList[String], accessor: IWailaDataAccessor, config: IWailaConfigHandler): JList[String] = tooltip
 
-  def getWailaTail(stack: ItemStack,
-                            tooltip: JList[String],
-                            accessor: IWailaDataAccessor,
-                            config: IWailaConfigHandler): JList[String] = tooltip
+  def getWailaTail(stack: ItemStack, tooltip: JList[String], accessor: IWailaDataAccessor, config: IWailaConfigHandler): JList[String] = tooltip
+}
+
+abstract class EntityProviderBase[T: ClassTag] extends ProviderBase[T, Entity] with IWailaEntityProvider {
+
+  def getNBTData(player: EntityPlayerMP, ent: Entity, tag: NBTTagCompound, world: World): NBTTagCompound = {
+    if (ent != null)
+      ent.writeToNBT(tag)
+    tag
+  }
+
+  def getWailaOverride(accessor: IWailaEntityAccessor, config: IWailaConfigHandler): Entity = null
+
+  def getWailaHead(entity: Entity, tooltip: JList[String], accessor: IWailaEntityAccessor, config: IWailaConfigHandler): JList[String] = tooltip
+
+  def getWailaBody(entity: Entity, tooltip: JList[String], accessor: IWailaEntityAccessor, config: IWailaConfigHandler): JList[String] = tooltip
+
+  def getWailaTail(entity: Entity, tooltip: JList[String], accessor: IWailaEntityAccessor, config: IWailaConfigHandler): JList[String] = tooltip
+
 }

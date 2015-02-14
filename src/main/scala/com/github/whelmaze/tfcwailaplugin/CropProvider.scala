@@ -11,7 +11,7 @@ import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
 
-object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String] {
+object CropProvider extends TileEntityProviderBase[TECrop] with EphemeralCache[Int, String] {
 
   override def getWailaHead(stack: ItemStack,
                    tooltip: JList[String],
@@ -21,19 +21,17 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
 
     accessor.getTileEntity match {
       case tec: TECrop =>
+        def updateF(ci: CropIndex, p: Boolean = false) = {
+          val newIs = new ItemStack(if (p) ci.Output2 else ci.Output1)
+          ItemFoodTFC.createTag(newIs)
+          newIs.getDisplayName
+        }
+
         val str = CropManager.getInstance.getCropFromId(tec.cropId) match {
           case pepper: CropIndexPepper if pepper.Output2 != null =>
-            cache.getOrElseUpdate(tec.cropId,{
-              val newIs = new ItemStack(pepper.Output2, 1)
-              ItemFoodTFC.createTag(newIs, 1.0f)
-              newIs.getDisplayName
-            })
+            cache.getOrElseUpdate(tec.cropId, updateF(pepper, p = true))
           case others: CropIndex if others.Output1 != null =>
-            cache.getOrElseUpdate(tec.cropId, {
-              val newIs = new ItemStack(others.Output1, 1)
-              ItemFoodTFC.createTag(newIs, 1.0f)
-              newIs.getDisplayName
-            })
+            cache.getOrElseUpdate(tec.cropId, updateF(others))
           case _ =>
             "Unknown"
         }
@@ -50,7 +48,6 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
                    accessor: IWailaDataAccessor,
                    config: IWailaConfigHandler): JList[String] = {
     import net.minecraft.util.EnumChatFormatting._
-    import net.minecraft.util.StatCollector.translateToLocal
     import implicits.JavaEnumOrdering._
 
     // https://github.com/Deadrik/TFCraft/commit/055d3559bbfc257b0b4f6e0e8384631be661bf11
@@ -59,9 +56,9 @@ object CropProvider extends ProviderBase[TECrop] with EphemeralCache[Int, String
       val nuType = accessor.getTileEntity match {
         case tec: TECrop =>
           CropManager.getInstance.getCropFromId(tec.cropId).getCycleType match {
-            case 0 => s"$RED${translateToLocal("gui.Nutrient.A")}"
-            case 1 => s"$GOLD${translateToLocal("gui.Nutrient.B")}"
-            case 2 => s"$YELLOW${translateToLocal("gui.Nutrient.C")}"
+            case 0 => s"$RED${util.translate("gui.Nutrient.A")}"
+            case 1 => s"$GOLD${util.translate("gui.Nutrient.B")}"
+            case 2 => s"$YELLOW${util.translate("gui.Nutrient.C")}"
             case _ => ""
           }
         case _ => ""

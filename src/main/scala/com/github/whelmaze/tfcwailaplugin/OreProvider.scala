@@ -7,7 +7,7 @@ import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
 
-object OreProvider extends ProviderBase[TEOre] with EphemeralCache[Int, ItemStack] {
+object OreProvider extends TileEntityProviderBase[TEOre] with EphemeralCache[Int, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     val meta = accessor.getMetadata

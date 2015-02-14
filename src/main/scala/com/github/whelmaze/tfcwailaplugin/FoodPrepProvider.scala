@@ -10,9 +10,9 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 
-import implicits.ItemStackAdapter
+import implicits.RichItemStack
 
-object FoodPrepProvider extends ProviderBase[TEFoodPrep] {
+object FoodPrepProvider extends TileEntityProviderBase[TEFoodPrep] {
 
   override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
     te match {
