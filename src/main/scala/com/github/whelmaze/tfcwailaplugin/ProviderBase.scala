@@ -17,7 +17,7 @@ abstract class ProviderBase[A: ClassTag, B] {
 
   def targetClass: Class[A] = implicitly[ClassTag[A]].runtimeClass.asInstanceOf[Class[A]]
 
-  def asTarget(target: B)(implicit ev: A <:< B): A = target.asInstanceOf[A]
+  def asTargetType(target: B)(implicit ev: A <:< B): A = target.asInstanceOf[A]
 
 }
 

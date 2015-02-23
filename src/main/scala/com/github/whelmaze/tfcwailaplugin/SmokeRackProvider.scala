@@ -98,7 +98,7 @@ object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
     iso foreach { is =>
       tooltip add is.toInfoString
       //tooltip add s"smokeCounter: ${Food.getSmokeCounter(is)}"
-      val rack = asTarget(accessor.getTileEntity)
+      val rack = asTargetType(accessor.getTileEntity)
       if (!Food.isSmoked(is) && isSmoking(rack)(accessor) && Food.getSmokeCounter(is) < 12) {
         tooltip add s"${DARK_GRAY}Smoking..."
       } else if (!Food.isDried(is) && isDrying(is)) {
