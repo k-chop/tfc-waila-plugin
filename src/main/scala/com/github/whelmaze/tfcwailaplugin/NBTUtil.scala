@@ -30,7 +30,7 @@ object NBTUtil {
     }
   }
 
-  @inline final def readItemStacksInSlot(nbt: NBTTagCompound, tagListName: String = "Items", slot: Byte): Option[ItemStack] = {
+  @inline final def readItemStackInSlot(nbt: NBTTagCompound, tagListName: String = "Items", slot: Byte): Option[ItemStack] = {
     val tag = nbt.getTagList(tagListName, NBT.TAG_COMPOUND)
     (0 until tag.tagCount) find { i =>
       val tagC = tag.getCompoundTagAt(i)

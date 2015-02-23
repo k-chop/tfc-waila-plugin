@@ -45,7 +45,7 @@ object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
     accessor.getTileEntity match {
       case rack: TESmokeRack =>
         val slot = assignSlotFromPosition(accessor)
-        NBTUtil.readItemStacksInSlot(accessor.getNBTData, slot = slot.toByte)
+        NBTUtil.readItemStackInSlot(accessor.getNBTData, slot = slot.toByte)
       case _ => None
     }
   }
