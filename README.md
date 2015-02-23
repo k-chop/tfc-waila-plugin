@@ -13,7 +13,7 @@ This plugin depends on **TFC base code** (not API) partially.
 Accordingly, there is no guarantee that this plugin compatible across TFC minor version change.
 
 
-Requires
+Requirements
 --------
 - Waila 1.5.8
 - TFC 0.79.15
@@ -22,6 +22,8 @@ Requires
 
 Download
 --------
+latest: 0.2.1
+
 [>>> Release](https://github.com/whelmaze/tfc-waila-plugin/releases)
 
 Build
