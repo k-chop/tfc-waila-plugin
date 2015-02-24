@@ -3,7 +3,7 @@ package com.github.whelmaze.tfcwailaplugin
 import net.minecraft.util.StatCollector.{translateToLocal => t}
 
 package object util {
-  type Coord = (Int, Int, Int)
+  final case class Coord(x: Int, y: Int, z: Int)
 
   object translated {
     def units = t("gui.units")

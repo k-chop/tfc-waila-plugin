@@ -2,6 +2,7 @@ package com.github.whelmaze.tfcwailaplugin
 
 import java.util.{List => JList}
 
+import com.bioxx.tfc.Core.{TFC_Time, TFC_Core}
 import com.bioxx.tfc.TileEntities.{TEFirepit, TESmokeRack}
 import com.bioxx.tfc.api.Food
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
@@ -18,15 +19,6 @@ import implicits.RichItemStack
 import util.Coord
 
 object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
-
-  override def getNBTData(player: EntityPlayerMP, te: TileEntity, tag: NBTTagCompound, world: World, x: Int, y: Int, z: Int): NBTTagCompound = {
-    te match {
-      case sr: TESmokeRack =>
-        tag.setTag("Items", NBTUtil.buildTagList(sr, start = 0, end = sr.getSizeInventory))
-      case _ =>
-    }
-    tag
-  }
 
   private[this] def assignSlotFromPosition(accessor: IWailaDataAccessor): Int = {
     // https://github.com/Deadrik/TFCraft/blob/d63ac3ae957cbc5664bb2bbd19e92d2712a12644/src/Common/com/bioxx/tfc/Blocks/BlockSmokeRack.java#L69
@@ -50,22 +42,30 @@ object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
     }
   }
 
-  private[this] final val dl = Seq((0,-1,0),(1,-1,0),(-1,-1,0),(0,-1,1),(0,-1,-1),(0,-2,0),(1,-2,0),(-1,-2,0),(0,-2,1),(0,-2,-1))
+  private[this] val DL_LEN = 10
+  private[this] val dlx = Array( 0, 1,-1, 0, 0, 0, 1,-1, 0, 0)
+  private[this] val dly = Array(-1,-1,-1,-1,-1,-2,-2,-2,-2,-2)
+  private[this] val dlz = Array( 0, 0, 0, 1,-1, 0, 0,-0, 1,-1)
+
+  // TEFirepit meta = 2(firepit has fuel and burning), meta = 1(firepit has no fuel but still burning)
+  def isSmokingReady(te: TileEntity) = te.getBlockMetadata == 2
 
   private[this] def isSmoking(rack: TESmokeRack)(accessor: IWailaDataAccessor): Boolean = {
-    def findFirepit(pos: MovingObjectPosition) = dl find { case (xx,yy,zz) => sfp(pos.blockX + xx, pos.blockY + yy, pos.blockZ + zz) }
-    def sfp(x: Int, y: Int, z: Int): Boolean = accessor.getWorld.getTileEntity(x, y, z).isInstanceOf[TEFirepit]
+    def sfp(x: Int, y: Int, z: Int) = accessor.getWorld.getTileEntity(x, y, z)
 
-    val pos = accessor.getPosition
-    val pit: Option[Coord] = findFirepit(pos)
-    val light = pit exists { case (x, y, z) =>
-      accessor.getWorld.getTileEntity(pos.blockX + x, pos.blockY + y, pos.blockZ + z) match {
-        // meta = 2(firepit has fuel and burning), meta = 1(firepit has no fuel but still burning)
-        case p: TEFirepit => p.getBlockMetadata == 2
-        case _ => false
+    def isAvailableSmokingReadyFirepit(pos: MovingObjectPosition): Boolean = {
+      @annotation.tailrec def recur(idx: Int): Boolean = idx match {
+        case DL_LEN => false
+        case i =>
+          val te = sfp(pos.blockX + dlx(i), pos.blockY + dly(i), pos.blockZ + dlz(i))
+          if (te.isInstanceOf[TEFirepit] && isSmokingReady(te))
+            true
+          else recur(i+1)
       }
+      recur(0)
     }
-    light// && TFC_Time.getTotalHours <= rack.lastSmokedTime + 1
+
+    isAvailableSmokingReadyFirepit(accessor.getPosition)
   }
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
@@ -83,10 +83,7 @@ object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
     tooltip
   }
 
-  private[this] def isDrying(is: ItemStack): Boolean = {
-    val dryTime = Food.getDried(is)
-    0 <= dryTime && dryTime < Food.DRYHOURS
-  }
+  def isDrying(dryTime: Int): Boolean = 0 <= dryTime && dryTime < Food.DRYHOURS
 
   override def getWailaBody(stack: ItemStack,
                             tooltip: JList[String],
@@ -99,10 +96,19 @@ object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
       tooltip add is.toInfoString
       //tooltip add s"smokeCounter: ${Food.getSmokeCounter(is)}"
       val rack = asTargetType(accessor.getTileEntity)
-      if (!Food.isSmoked(is) && isSmoking(rack)(accessor) && Food.getSmokeCounter(is) < 12) {
+
+      if (!Food.isSmoked(is) && isSmoking(rack)(accessor)) {
         tooltip add s"${DARK_GRAY}Smoking..."
-      } else if (!Food.isDried(is) && isDrying(is)) {
-        tooltip add s"${DARK_GRAY}Drying..."
+      } else if (!Food.isDried(is)) {
+        val slot = assignSlotFromPosition(accessor)
+        accessor.getNBTData.getIntArray("driedCounter").lift(slot) foreach { driedCounter =>
+          val dryTime = (TFC_Time.getTotalHours - driedCounter).toInt
+          if (isDrying(dryTime))
+            tooltip add s"${DARK_GRAY}Drying..."
+          else if (Food.DRYHOURS <= dryTime && driedCounter != 0) {
+            tooltip add s"${GRAY}Well-Dried!"
+          }
+        }
       }
     }
     tooltip
