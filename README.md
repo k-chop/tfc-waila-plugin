@@ -22,7 +22,7 @@ Requirements
 
 Download
 --------
-latest: 0.2.1
+latest: 0.2.1a
 
 [>>> Release](https://github.com/whelmaze/tfc-waila-plugin/releases)
 
