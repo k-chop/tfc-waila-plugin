@@ -3,7 +3,6 @@ package com.github.whelmaze.tfcwailaplugin
 import java.util.{List => JList}
 
 import com.bioxx.tfc.Core.TFC_Time
-import com.bioxx.tfc.Food.ItemFoodTFC
 import com.bioxx.tfc.Items.Pottery.ItemPotterySmallVessel
 import com.bioxx.tfc.TileEntities.TEPottery
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
@@ -11,7 +10,6 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.common.util.ForgeDirection
 import scala.language.postfixOps
 
-import implicits.RichItemFoodTFC
 import implicits.RichItemStack
 
 object PotteryProvider extends TileEntityProviderBase[TEPottery] {
