@@ -1,15 +1,15 @@
 package com.github.whelmaze.tfcwailaplugin
 
-import com.bioxx.tfc.TFCBlocks
-import com.bioxx.tfc.TileEntities.TileEntityToolRack
+import com.bioxx.tfc.TileEntities.TEToolRack
+import com.bioxx.tfc.api.TFCBlocks
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
-object ToolRackProvider extends TileEntityProviderBase[TileEntityToolRack] with EphemeralCache[Int, ItemStack] {
+object ToolRackProvider extends TileEntityProviderBase[TEToolRack] with EphemeralCache[Int, ItemStack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
-      case tr: TileEntityToolRack =>
+      case tr: TEToolRack =>
 
         val pos = accessor.getPosition
         val v = pos.hitVec

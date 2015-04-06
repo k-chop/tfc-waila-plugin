@@ -1,10 +1,8 @@
 package com.github.whelmaze.tfcwailaplugin
 
-import com.bioxx.tfc.Core.TFCFluid
-import com.bioxx.tfc.TFCItems
 import com.bioxx.tfc.TileEntities.TEBarrel
 import com.bioxx.tfc.api.Constant.Global
-import com.bioxx.tfc.api.Food
+import com.bioxx.tfc.api.{TFCFluids, TFCItems, Food}
 import com.bioxx.tfc.api.Interfaces.IFood
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.{Item, ItemStack}
@@ -12,9 +10,7 @@ import net.minecraft.item.{Item, ItemStack}
 import java.util.{List => JList}
 
 import implicits._
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.world.World
+
 
 object BarrelProvider extends TileEntityProviderBase[TEBarrel] {
 
@@ -38,15 +34,15 @@ object BarrelProvider extends TileEntityProviderBase[TEBarrel] {
     // https://github.com/Deadrik/TFCraft/blob/708511cdbb25d0b2c356eacc129334f8e81243a3/src/Common/com/bioxx/tfc/GUI/GuiBarrel.java#L315-343
 
     def isBrining =
-      fs.getFluid == TFCFluid.BRINE && !Food.isBrined(is) && Option(b.recipe).nonEmpty && canBriningAndPickling(is.getItem)
+      fs.getFluid == TFCFluids.BRINE && !Food.isBrined(is) && Option(b.recipe).nonEmpty && canBriningAndPickling(is.getItem)
 
     def isPickling =
-      fs.getFluid == TFCFluid.VINEGAR && !Food.isPickled(is) && Food.isBrined(is) &&
+      fs.getFluid == TFCFluids.VINEGAR && !Food.isPickled(is) && Food.isBrined(is) &&
         Food.getWeight(is) / fs.amount <= Global.FOOD_MAX_WEIGHT / b.getMaxLiquid &&
         Option(b.recipe).isEmpty && canBriningAndPickling(is.getItem)
 
     def isPreserving =
-      fs.getFluid == TFCFluid.VINEGAR && Food.isPickled(is) &&
+      fs.getFluid == TFCFluids.VINEGAR && Food.isPickled(is) &&
         Food.getWeight(is) / b.getFluidStack.amount <= Global.FOOD_MAX_WEIGHT/b.getMaxLiquid*2 &&
         Option(b.recipe).isEmpty
 

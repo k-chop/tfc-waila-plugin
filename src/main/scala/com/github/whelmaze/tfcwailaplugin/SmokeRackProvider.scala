@@ -2,21 +2,17 @@ package com.github.whelmaze.tfcwailaplugin
 
 import java.util.{List => JList}
 
-import com.bioxx.tfc.Core.{TFC_Time, TFC_Core}
+import com.bioxx.tfc.Core.TFC_Time
 import com.bioxx.tfc.TileEntities.{TEFirepit, TESmokeRack}
 import com.bioxx.tfc.api.Food
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.MovingObjectPosition
-import net.minecraft.world.World
 
 import scala.language.postfixOps
 
 import implicits.RichItemStack
-import util.Coord
 
 object SmokeRackProvider extends TileEntityProviderBase[TESmokeRack] {
 

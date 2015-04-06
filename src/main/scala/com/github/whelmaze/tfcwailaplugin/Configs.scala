@@ -24,7 +24,7 @@ object Configs {
 
     register (
       // TELogPile
-      numberOfLogOnly, noLogInfo
+      /*numberOfLogOnly, noLogInfo*/
     )
   }
 
