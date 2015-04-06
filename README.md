@@ -1,7 +1,7 @@
 Waila plugin for TerraFirmaCraft
 ================================
 
-TFC 0.79.16 added official Waila support! yay!
+TFC 0.79.16 added official Waila support! yeah!
 
 This plugin add a tiny little bit more support for Waila :)
 
