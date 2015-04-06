@@ -9,27 +9,27 @@ object Providers {
     Configs.registerAll(registrar)
 
     // registration TileEntity providers
-    CropProvider.register(targets = Head, Body)
+    //CropProvider.register(targets = Head, Body)
 
-    WorldItemProvider.register(targets = Stack)
+    //WorldItemProvider.register(targets = Stack)
 
-    BarrelProvider.register(targets = Head, Body)
+    //BarrelProvider.register(targets = Head, Body)
 
-    OreProvider.register(targets = Stack)
+    //OreProvider.register(targets = Stack)
 
     PotteryProvider.register(targets = Stack, Body)
 
     ToolRackProvider.register(targets = Stack)
 
-    LogPileProvider.register(targets = Body, NBT)
+    //LogPileProvider.register(targets = Body, NBT)
 
-    IngotPileProvider.register(targets = Stack, Head, Body)
+    IngotPileProvider.register(targets = Head, Body)
 
     FoodPrepProvider.register(targets = Body, NBT)
 
-    SmokeRackProvider.register(targets = Stack, Head, Body, NBT)
+    //SmokeRackProvider.register(targets = Stack, Head, Body, NBT)
 
-    CrucibleProvider.register(targets = Body)
+    //CrucibleProvider.register(targets = Body)
 
     // registration Entity providers
     IAnimalProvider.register(targets = NBT, Body)

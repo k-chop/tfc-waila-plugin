@@ -64,7 +64,7 @@ object IngotPileProvider extends TileEntityProviderBase[TEIngotPile] with Epheme
                    config: IWailaConfigHandler): JList[String] = {
     accessor.getTileEntity match {
       case ingots: TEIngotPile =>
-        tooltip.add(s"${calcWholeStackIngot(ingots, accessor)} stack")
+        tooltip.add(s"total: ${calcWholeStackIngot(ingots, accessor)} stack")
       case _ =>
     }
     tooltip
