@@ -1,9 +1,14 @@
-Waila plugin for TerraFirmaCraft (WIP)
-======================================
+Waila plugin for TerraFirmaCraft
+================================
+
+TFC 0.79.16 added official Waila support! yay!
+
+This plugin add a tiny little bit more support for Waila :)
+
 
 Example
 -------
-![showing barrel information](https://github.com/whelmaze/tfc-waila-plugin/wiki/images/barrel02.png)
+![total stack of ingot pile](https://github.com/whelmaze/tfc-waila-plugin/wiki/images/ne_ingotpile01.png)
 
 [>>> more screen shot](https://github.com/whelmaze/tfc-waila-plugin/wiki/Screen-Shots)
 
@@ -15,15 +20,14 @@ Accordingly, there is no guarantee that this plugin compatible across TFC minor 
 
 Requirements
 --------
-- Waila 1.5.8
-- TFC 0.79.15
+- Waila 1.5.10
+- TFC 0.79.16
 - Minecraft 1.7.10
 
 
 Download
 --------
-latest: 0.2.1a
-
+0.3.0 (for TFC 0.79.16)
 [>>> Release](https://github.com/whelmaze/tfc-waila-plugin/releases)
 
 Build
