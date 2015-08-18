@@ -21,13 +21,13 @@ Accordingly, there is no guarantee that this plugin compatible across TFC minor 
 Requirements
 --------
 - Waila 1.5.10
-- TFC 0.79.16
+- TFC 0.79.22
 - Minecraft 1.7.10
 
 
 Download
 --------
-0.3.0 (for TFC 0.79.16)
+0.4.0 (for TFC 0.79.22)
 [>>> Release](https://github.com/whelmaze/tfc-waila-plugin/releases)
 
 Build
