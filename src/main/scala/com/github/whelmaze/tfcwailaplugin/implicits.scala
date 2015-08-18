@@ -40,7 +40,7 @@ object implicits {
 
     @inline def toInfoString: String = is.getItem match {
       case i: ItemFoodTFC => i.toSimpleInfoString(is)
-      case i: Item => s"${is.getDisplayName} x${is.stackSize}"
+      case i: Item => s"${is.stackSize}x ${is.getDisplayName}"
       case _ => s"$WHITE*** ${GOLD}Invalid ItemStack $WHITE***"
     }
   }
