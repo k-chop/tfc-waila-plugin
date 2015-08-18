@@ -1,16 +1,20 @@
 Waila plugin for TerraFirmaCraft
 ================================
 
-TFC 0.79.16 added official Waila support! yeah!
+TFC already have official waila suport, and this plugin add a tiny little bit more waila support for TFC TileEntities.
 
-This plugin add a tiny little bit more support for Waila :)
+This plugin supports:
 
+- ToolRack (can see information of tools placed in toolrack)
+- IngotPile (can see total stack of ingot tower! XD)
+- FoodPrep (can see information of foods placed in foodprep)
+- Pottery (can see information of something that is inside a container)
 
-Example
+Screenshot
 -------
 ![total stack of ingot pile](https://github.com/whelmaze/tfc-waila-plugin/wiki/images/ne_ingotpile01.png)
 
-[>>> more screen shot](https://github.com/whelmaze/tfc-waila-plugin/wiki/Screen-Shots)
+[>>> more screenshot](https://github.com/whelmaze/tfc-waila-plugin/wiki/Screen-Shots)
 
 Notice
 ------
