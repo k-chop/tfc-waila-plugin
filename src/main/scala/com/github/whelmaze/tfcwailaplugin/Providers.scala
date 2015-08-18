@@ -32,7 +32,7 @@ object Providers {
     //CrucibleProvider.register(targets = Body)
 
     // registration Entity providers
-    IAnimalProvider.register(targets = NBT, Body)
+    //IAnimalProvider.register(targets = NBT, Body)
 
   }
 

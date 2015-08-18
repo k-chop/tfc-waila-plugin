@@ -5,7 +5,7 @@ import com.bioxx.tfc.api.TFCBlocks
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 
-object ToolRackProvider extends TileEntityProviderBase[TEToolRack] with EphemeralCache[Int, ItemStack] {
+object ToolRackProvider extends TileEntityProviderBase[TEToolRack] {
 
   override def getWailaStack(accessor: IWailaDataAccessor, config: IWailaConfigHandler): ItemStack = {
     accessor.getTileEntity match {
@@ -34,11 +34,7 @@ object ToolRackProvider extends TileEntityProviderBase[TEToolRack] with Ephemera
             tr.getStackInSlot(3)
           else null
         }
-        if (result == null) { // selecting empty slot on toolRack
-          // fix incorrect woodName
-          val id = tr.woodType
-          cache.getOrElseUpdate(id, new ItemStack(TFCBlocks.ToolRack, 1, id))
-        } else result
+        result
       case _ => null
     }
   }

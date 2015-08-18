@@ -48,10 +48,12 @@ object PotteryProvider extends TileEntityProviderBase[TEPottery] {
       stack.getItem match {
         // solid container
         case i: ItemPotterySmallVessel if stack.getItemDamage == 1 && tag != null && tag.hasKey("Items") =>
+          import net.minecraft.util.EnumChatFormatting._
+
           for {
             bag <- Option(i loadBagInventory stack)
             is <- bag if is != null
-          } tooltip.add(is.toInfoString)
+          } tooltip.add(s"$GOLD${is.toInfoString}")
 
         // liquid container(molten metal)
         case i: ItemPotterySmallVessel if stack.getItemDamage == 2 && tag != null =>
