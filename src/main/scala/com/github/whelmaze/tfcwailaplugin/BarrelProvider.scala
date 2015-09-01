@@ -20,7 +20,7 @@ object BarrelProvider extends TileEntityProviderBase[TEBarrel] {
     item match {
       case f: IFood => f.getFoodGroup match {
         case Fruit | Vegetable | Protein => true
-        case _ if f == TFCItems.Cheese => true
+        case _ if f == TFCItems.cheese => true
         case _ => false
       }
       case _ => false
