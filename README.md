@@ -26,7 +26,7 @@ Accordingly, there is no guarantee that this plugin compatible across TFC minor 
 Requirements
 --------
 - Waila 1.5.10
-- TFC 0.79.22
+- TFC 0.79.23
 - Minecraft 1.7.10
 
 
