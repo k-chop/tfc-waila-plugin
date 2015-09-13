@@ -22,15 +22,15 @@ object CropProvider extends TileEntityProviderBase[TECrop] with EphemeralCache[I
     accessor.getTileEntity match {
       case tec: TECrop =>
         def updateF(ci: CropIndex, p: Boolean = false) = {
-          val newIs = new ItemStack(if (p) ci.Output2 else ci.Output1)
+          val newIs = new ItemStack(if (p) ci.output2 else ci.output1)
           ItemFoodTFC.createTag(newIs)
           newIs.getDisplayName
         }
 
         val str = CropManager.getInstance.getCropFromId(tec.cropId) match {
-          case pepper: CropIndexPepper if pepper.Output2 != null =>
+          case pepper: CropIndexPepper if pepper.output2 != null =>
             cache.getOrElseUpdate(tec.cropId, updateF(pepper, p = true))
-          case others: CropIndex if others.Output1 != null =>
+          case others: CropIndex if others.output1 != null =>
             cache.getOrElseUpdate(tec.cropId, updateF(others))
           case _ =>
             "Unknown"
