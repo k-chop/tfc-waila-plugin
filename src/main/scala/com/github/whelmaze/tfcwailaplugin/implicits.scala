@@ -65,7 +65,7 @@ object implicits {
 
   implicit final class RichMetal(val metal: Metal) extends AnyVal {
     // https://github.com/Deadrik/TFCraft/blob/7e196df86602d191fcdfb2185b28b1277fe09032/src/Common/com/bioxx/tfc/GUI/GuiCrucible.java#L77
-    def localizedName: String = util.translate("gui.metal." + metal.Name.replace(" ", ""))
+    def localizedName: String = util.translate("gui.metal." + metal.name.replace(" ", ""))
   }
 
 }

@@ -19,13 +19,13 @@ object CrucibleProvider extends TileEntityProviderBase[TECrucible] {
     accessor.getTileEntity match {
       case c: TECrucible =>
         Option(c.currentAlloy) foreach {
-          case alloy: Alloy if alloy.AlloyIngred.nonEmpty =>
+          case alloy: Alloy if alloy.alloyIngred.nonEmpty =>
             // Output
-            val as = alloy.outputType.Name
+            val as = alloy.outputType.name
             val aa = math.round(alloy.outputAmount)
             tooltip add s"${util.translated.output}: $WHITE$UNDERLINE$as$RESET ($aa ${util.translated.units})"
             // MoltenAlloys
-            alloy.AlloyIngred.foreach { m =>
+            alloy.alloyIngred.foreach { m =>
               val ms = m.metalType.localizedName
               tooltip add f"$ms: $GREEN${m.metal}%.2f%%"
             }

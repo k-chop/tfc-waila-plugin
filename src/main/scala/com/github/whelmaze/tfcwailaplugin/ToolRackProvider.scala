@@ -1,7 +1,6 @@
 package com.github.whelmaze.tfcwailaplugin
 
 import com.bioxx.tfc.TileEntities.TEToolRack
-import com.bioxx.tfc.api.TFCBlocks
 import mcp.mobius.waila.api.{IWailaConfigHandler, IWailaDataAccessor}
 import net.minecraft.item.ItemStack
 

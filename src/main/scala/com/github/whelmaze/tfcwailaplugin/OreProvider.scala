@@ -14,16 +14,16 @@ object OreProvider extends TileEntityProviderBase[TEOre] with EphemeralCache[Int
     val block = accessor.getBlock
     // https://github.com/Deadrik/TFCraft/blob/2bd2f2286b1682271fd95b4d5a8b6f58fb109f91/src/Common/com/bioxx/tfc/Items/Tools/ItemProPick.java#L113
     val id = {
-      if (block == TFCBlocks.Ore)
+      if (block == TFCBlocks.ore)
         meta
-      else if (block == TFCBlocks.Ore2)
+      else if (block == TFCBlocks.ore2)
         meta + Global.ORE_METAL.length
-      else if (block == TFCBlocks.Ore3)
+      else if (block == TFCBlocks.ore3)
         meta + Global.ORE_METAL.length + Global.ORE_MINERAL.length
       else
         0
     }
-    cache.getOrElseUpdate(id, new ItemStack(TFCItems.OreChunk, 1, id))
+    cache.getOrElseUpdate(id, new ItemStack(TFCItems.oreChunk, 1, id))
   }
 
 }
