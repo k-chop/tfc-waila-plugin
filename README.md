@@ -32,7 +32,7 @@ Requirements
 
 Download
 --------
-0.4.1 (for TFC 0.79.23)
+0.4.1 (for TFC 0.79.23+)
 
 [>>> Release](https://github.com/whelmaze/tfc-waila-plugin/releases)
 
