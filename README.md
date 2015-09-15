@@ -1,6 +1,6 @@
 Waila plugin for TerraFirmaCraft
 ================================
-**Latest version: 0.4.1 (TFC 0.79.23 compatible)**
+**Latest version: 0.4.1 (TFC 0.79.24 compatible)**
 
 TFC already have official waila suport, and this plugin add a tiny little bit more waila support for TFC TileEntities.
 
@@ -26,7 +26,7 @@ Accordingly, there is no guarantee that this plugin compatible across TFC minor 
 Requirements
 --------
 - Waila 1.5.10
-- TFC 0.79.23
+- TFC 0.79.23+
 - Minecraft 1.7.10
 
 
